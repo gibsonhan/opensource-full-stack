@@ -1,0 +1,19 @@
+title AJAX Form Sequence
+
+Browser->Server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note
+Server--> Browser: HTTP Response 302 Redirect (text/html): new_note
+note over Browser: The 302 Redirect: Reloads the notes pages and retriggers the html, css, and js requst
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
+Server-->Browser: HTTP Response Object(text/html):note
+
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+Server--> Browser: HTTP Response(text/css): main.css
+
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+Server-->Browser: HTTP Response(application/js): main.js 
+note over Browser: browswer executes js-code, which request json data from server
+
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+Server-->Browser: HTTP Response(application/json) data.json
+
+note over Browser: browswer execute event handler that render note to display?

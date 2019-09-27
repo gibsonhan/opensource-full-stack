@@ -1,0 +1,16 @@
+title SPA sequence
+
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa
+Server--> Browser: HTTP Response HTML-content
+
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+Server--> Browser: HTTP Response(text/css): main.css
+
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa.js
+Server-->Browser: HTTP Response(application/js): Spamjs
+note over Browser: browswer executes js-code, which request json data from server
+
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+Server-->Browser: HTTP Response(application/json) data.json
+
+note over Browser: browswer execute event handler that render note to display?
