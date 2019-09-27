@@ -8,18 +8,15 @@ const Header = (props) => {
 }
 
 const Content = (props) => {
-    const {part1, part2, part3} = props;
+    const parts = props.parts.map(part => <Part key={part.id} part={part}/>)
     return (
         <div>
-            <Part part={part1} />
-            <Part part={part2} />
-            <Part part={part3} />
+            {parts}
         </div>
     )
 }
 
 const Part = (props) => {
-    console.log(props)
     const {name, exercises} = props.part;
     return(
         <p>
@@ -29,30 +26,42 @@ const Part = (props) => {
 }
 
 const Total = (props) => {
+    const e1 = props.parts[0].exercises;
+    const e2 = props.parts[1].exercises;
+    const e3 = props.parts[2].exercises;
+
+    const [t1, t2, t3] = props.parts.map(val => val.exercises)
     return (
-        <p>Number of exercises {props.exercise1 + props.exercise2 + props.exercise3}</p>
+        <>
+            <p>Number of exercises {e1 + e2 + e3}</p>
+            <p>Numbr of exercises {t1 + t2 + t3}</p>
+        </>
     )
 }
 const App = () => {
     const course = 'Half Stack Application developmentm'
-    const part1 = {
-        name: 'Fundamentals of React',
-        exercises: 10
-    }
-    const part2 = {
-        name: 'Using props to pass data',
-        exercises: 7
-    }
-    const part3= {
-        name: 'State of a component',
-        exercises: 14
-    }
-
+    const parts = [
+        {
+            id: 1,
+            name: 'Fundamentals of React',
+            exercises: 10
+        },
+        {
+            id: 2,
+            name: 'Using props to pass data',
+            exercises: 7
+        },
+        {
+            id: 3,
+            name: 'State of a component',
+            exercises: 14
+        }
+    ]
     return (
         <div>
             <Header course={course} />
-            <Content part1={part1} part2={part2} part3={part3} />
-            <Total exercise1={part1.exercises} exercise2={part2.exercises} exercise3={part3.exercises} />
+            <Content parts={parts} />
+            <Total parts={parts} />
         </div>
     )
 
