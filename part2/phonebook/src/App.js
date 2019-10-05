@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 
-import Number from './components/Number'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
 
@@ -29,7 +31,7 @@ const App = () => {
         setNewNumber(e.target.value)
     }
 
-    const handleNameSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
         
         if(nameExist() === false){
@@ -58,37 +60,17 @@ const App = () => {
         ? persons.filter(person => person.name.toLowerCase().includes(newFilter))
         : persons
 
-    const numberRow = () => {
-         return showFilterNames.map(person => <Number key={person.id} name={person.name} phoneNumber={person.number}/>)
-    }
     return (
        <div>
-          <div>
-                Filter show with: <input 
-                    value={newFilter}
-                    onChange={handleNewFilter}
-                />
-            </div>
-            <h2>Add Contacts</h2>
-            <form onSubmit={handleNameSubmit}>
-                <div>
-                    name: <input
-                            value={newName}
-                            onChange={handleNewName}
-                                />
-                </div>
-                <div>
-                    phone:<input
-                            value={newNumber}
-                            onChange={handleNewNumber}
-                            />
-                </div>
-                <div>
-                    <button type="submit"> add </button>
-                </div>
-            </form>
-            <h2> Phonebook Number </h2>
-           {numberRow()}
+            <Filter newFilter={newFilter} handleNewFilter={handleNewFilter} />
+            <PersonForm 
+                submit={handleSubmit}
+                nameValue={newName}
+                nameChange={handleNewName}
+                phoneValue={newNumber}
+                phoneChange={handleNewNumber}
+            />
+            <Persons showFilterNames={showFilterNames}/>
        </div> 
     )
 }
