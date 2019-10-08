@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+
+import contactService from './services/contact'
 
 const App = () => {
 
@@ -33,8 +34,10 @@ const App = () => {
                 name: newName,
                 number: newNumber
             }
-
-            create(newContact)
+            contactService
+                .create(newContact)
+                .then(object => setPersons(persons.concat(object)))
+                .catch(err => console.log('create promise failed', err))
         }
         else {
             window.alert(`${newName} already exist in the phonebook`)
@@ -43,23 +46,16 @@ const App = () => {
         setNewNumber('')
     }
 
-    const create = (newObject) => {
-        const createUrl = `http://localhost:3001/persons`
-        return axios
-            .post(createUrl, newObject)
-            .then(res => setPersons(persons.concat(res.data)))
-    }
+
 
     useEffect(() => {
-        console.log('Use Effect')
-        axios
-            .get('http://localhost:3001/persons') 
-            .then(res => {
-                console.log('promise successful', res)
-                setPersons(res.data)
-            }).catch(err => {
-                console.log('promise rejected', err)
-            })
+        contactService
+            .getAll()
+                .then(returnedContacts => {
+                    console.log('getAll promise successful')
+                    setPersons(returnedContacts)
+                })
+                .catch(err => console.log('getAll promise rejected', err))
     }, [])
 
     const nameExist = () => {
