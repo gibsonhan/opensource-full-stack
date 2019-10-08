@@ -29,12 +29,25 @@ const App = () => {
         e.preventDefault()
         
         if(nameExist() === false){
-            setPersons(persons.concat(newObj()))
+            const newContact = {
+                name: newName,
+                number: newNumber
+            }
+
+            create(newContact)
         }
         else {
             window.alert(`${newName} already exist in the phonebook`)
         }
         setNewName('')
+        setNewNumber('')
+    }
+
+    const create = (newObject) => {
+        const createUrl = `http://localhost:3001/persons`
+        return axios
+            .post(createUrl, newObject)
+            .then(res => setPersons(persons.concat(res.data)))
     }
 
     useEffect(() => {
@@ -48,14 +61,6 @@ const App = () => {
                 console.log('promise rejected', err)
             })
     }, [])
-
-    const newObj = () => {
-        return {
-            id: persons.length + 1,
-            name: newName,
-            number: newNumber
-        }
-    }
 
     const nameExist = () => {
         let arrNames = persons.map(person => person.name);
