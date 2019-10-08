@@ -5,6 +5,7 @@ import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 
 import contactService from './services/contact'
+import Axios from 'axios';
 
 const App = () => {
 
@@ -26,6 +27,18 @@ const App = () => {
         setNewNumber(e.target.value)
     }
 
+    const handleDelete = (id, name) => {
+        const remove = window.confirm(`Do you want to delete ${name}`)
+        if(remove === true) {
+            console.log(id)
+            contactService
+                .remove(id)
+                .then(()=> {
+                    setPersons(persons.filter(person => person.id !== id))
+                })
+                .catch(err => console.log('failed to delete object', err))
+        }
+    }
     const handleSubmit = (e) => {
         e.preventDefault()
         
@@ -45,8 +58,6 @@ const App = () => {
         setNewName('')
         setNewNumber('')
     }
-
-
 
     useEffect(() => {
         contactService
@@ -77,7 +88,9 @@ const App = () => {
                 phoneValue={newNumber}
                 phoneChange={handleNewNumber}
             />
-            <Persons showFilterNames={showFilterNames}/>
+            <Persons 
+                showFilterNames={showFilterNames} 
+                handleDelete={handleDelete}/>
        </div> 
     )
 }

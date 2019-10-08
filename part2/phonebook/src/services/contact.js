@@ -11,4 +11,9 @@ const create = (newObject) => {
     return request.then(res => res.data)
 }
 
-export default { getAll, create }
+const remove = (id) => {
+    const baseUrl = `http://localhost:3001/persons/${id}`
+    return axios.delete(baseUrl)
+}
+
+export default { getAll, create, remove }
