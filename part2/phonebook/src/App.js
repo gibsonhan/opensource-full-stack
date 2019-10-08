@@ -5,11 +5,10 @@ import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 
 import contactService from './services/contact'
-import Axios from 'axios';
 
 const App = () => {
 
-    const [persons, setPersons] = useState([])
+    const [ persons, setPersons] = useState([])
     const [ newName, setNewName ] = useState('')
     const [ newNumber, setNewNumber] = useState('')
     const [ newFilter, setNewFilter] = useState('')
@@ -30,7 +29,6 @@ const App = () => {
     const handleDelete = (id, name) => {
         const remove = window.confirm(`Do you want to delete ${name}`)
         if(remove === true) {
-            console.log(id)
             contactService
                 .remove(id)
                 .then(()=> {
@@ -41,19 +39,30 @@ const App = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        
+        const newContact = {
+            name: newName,
+            number: newNumber
+        }
         if(nameExist() === false){
-            const newContact = {
-                name: newName,
-                number: newNumber
-            }
             contactService
                 .create(newContact)
                 .then(object => setPersons(persons.concat(object)))
                 .catch(err => console.log('create promise failed', err))
         }
         else {
-            window.alert(`${newName} already exist in the phonebook`)
+            const update = window.confirm(`${newName} already exist in the phone book, would you like to replace the old number?`)
+            if(update === true) {
+                const updatePerson = persons.filter(person => person.name === newName)
+                contactService
+                    .update(updatePerson[0].id, newContact)
+                    .then(returnedObject => {
+                        //setPersons(persons.filter(person => person.name !== newName).concat(returnedObject))
+                        setPersons(persons.map(person => person.name !== newName ? person : returnedObject ))
+                    })
+                    .catch(err => console.log('update failed', err))
+            }
+            console.log('end')
+            
         }
         setNewName('')
         setNewNumber('')
