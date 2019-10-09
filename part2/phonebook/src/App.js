@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import EventMessage from './components/EventMessage'
 
 import contactService from './services/contact'
 
@@ -13,6 +14,7 @@ const App = () => {
     const [ newNumber, setNewNumber] = useState('')
     const [ newFilter, setNewFilter] = useState('')
     const [ showFilter, setShowFilter] = useState(false)
+    const [ eventMessage, setEventMessage] =useState(null)
 
     const handleNewFilter = (e) => {
         if(newFilter !== '') setShowFilter(true)
@@ -32,6 +34,10 @@ const App = () => {
             contactService
                 .remove(id)
                 .then(()=> {
+                    setEventMessage(`${name} has been deleted`)
+                    setTimeout(()=>{
+                        setEventMessage(null)
+                    }, 5000)
                     setPersons(persons.filter(person => person.id !== id))
                 })
                 .catch(err => console.log('failed to delete object', err))
@@ -46,7 +52,13 @@ const App = () => {
         if(nameExist() === false){
             contactService
                 .create(newContact)
-                .then(object => setPersons(persons.concat(object)))
+                .then(object => {
+                    setEventMessage(`${newName} has been added to the phonebook`)
+                    setTimeout(() => {
+                        setEventMessage(null)
+                    }, 5000)
+                    setPersons(persons.concat(object))
+                })
                 .catch(err => console.log('create promise failed', err))
         }
         else {
@@ -56,12 +68,13 @@ const App = () => {
                 contactService
                     .update(updatePerson[0].id, newContact)
                     .then(returnedObject => {
+                        setEventMessage(`${newName} has been updated`)
+                        setTimeout(()=> {setEventMessage(null)}, 3000)
                         //setPersons(persons.filter(person => person.name !== newName).concat(returnedObject))
                         setPersons(persons.map(person => person.name !== newName ? person : returnedObject ))
                     })
                     .catch(err => console.log('update failed', err))
             }
-            console.log('end')
             
         }
         setNewName('')
@@ -89,6 +102,8 @@ const App = () => {
 
     return (
        <div>
+            <h1>Phone Book</h1>
+            <EventMessage message={eventMessage} />
             <Filter newFilter={newFilter} handleNewFilter={handleNewFilter} />
             <PersonForm 
                 submit={handleSubmit}
