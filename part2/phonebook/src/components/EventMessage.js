@@ -1,8 +1,8 @@
 import React from 'react'
 
-const EventMessage = ({ message }) => {
+const EventMessage = ({ message, color }) => {
     const eventStyle = {
-        color: 'green',
+        color: color,
         background: 'lightgrey',
         border: 'bold',
         borderStyle: 'solid',
@@ -14,7 +14,6 @@ const EventMessage = ({ message }) => {
     }
     
     if(message === null) return <></>
-    
     return (
         <div style={eventStyle}>
             {message}

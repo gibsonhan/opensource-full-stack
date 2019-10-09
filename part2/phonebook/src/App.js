@@ -15,6 +15,7 @@ const App = () => {
     const [ newFilter, setNewFilter] = useState('')
     const [ showFilter, setShowFilter] = useState(false)
     const [ eventMessage, setEventMessage] =useState(null)
+    const [ eventColor, setEventColor] = useState('green')
 
     const handleNewFilter = (e) => {
         if(newFilter !== '') setShowFilter(true)
@@ -40,7 +41,16 @@ const App = () => {
                     }, 5000)
                     setPersons(persons.filter(person => person.id !== id))
                 })
-                .catch(err => console.log('failed to delete object', err))
+                .catch(err => {
+                    console.log('error message:',err)
+                    setEventMessage(`Infomation about ${name} has already been removed from the server`)
+                    setEventColor('red')
+                    setTimeout(()=> {
+                        setEventMessage(null)
+                        setEventColor('green')
+                    }, 3000)
+                    setPersons(persons.filter(person => person.id !== id))
+                })
         }
     }
     const handleSubmit = (e) => {
@@ -73,7 +83,15 @@ const App = () => {
                         //setPersons(persons.filter(person => person.name !== newName).concat(returnedObject))
                         setPersons(persons.map(person => person.name !== newName ? person : returnedObject ))
                     })
-                    .catch(err => console.log('update failed', err))
+                    .catch(err => {
+                        console.log('update failed', err)
+                        setEventMessage(`Infomation about ${newName} has already been removed from the server`)
+                        setEventColor('red')
+                        setTimeout(()=> {
+                            setEventMessage(null)
+                            setEventColor('green')
+                        }, 5000)
+                    })
             }
             
         }
@@ -103,7 +121,7 @@ const App = () => {
     return (
        <div>
             <h1>Phone Book</h1>
-            <EventMessage message={eventMessage} />
+            <EventMessage message={eventMessage} color={eventColor} />
             <Filter newFilter={newFilter} handleNewFilter={handleNewFilter} />
             <PersonForm 
                 submit={handleSubmit}
