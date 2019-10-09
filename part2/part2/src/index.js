@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import Note from './component/Note'
+import Notification from './component/Notification'
+
 import noteService from './services/notes'
 
+import './index.css'
 
 const App = () => {
     const [notes, setNotes] = useState([]);
@@ -10,6 +13,8 @@ const App = () => {
         'a new note...'
     )
     const [showAll, setShowAll] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('some error occurred')
+
     const notesToShow = showAll
          ? notes 
          : notes.filter(note => note.important === true)
@@ -66,14 +71,36 @@ const App = () => {
                     setNotes(notes.map(note => note.id !== id ? note: returnedNoted))
                 })
                 .catch(err => {
-                    alert(`the note ${note.content} was already delted from server`, err)
-                    setNotes(notes.filter(n => n.id !== id))
+                    setErrorMessage(
+                        `Note ${note.content} was already removed from the server`
+                    )
+                    setTimeout(() => {
+                        setErrorMessage(null)
+                    }, 5000)
+                    setNotes(notes.filter(n=> n.id !== id))
                 })
     }
-    //console.log('render', notes.length, 'notes')
+    
+    const Footer = () => {
+        const footerSytle = {
+            color: 'green',
+            fontStyle: 'italic',
+            fontSize: 16
+        }
+        return (
+            <div style={footerSytle}>
+                <br/>
+                <em>Note app, Deaprt of Computer Science, Uniersity of Helsinki 2019</em>
+            </div>
+        )
+    }
+
     return (
         <div>
             <h1>Notes</h1>
+
+            <Notification message={errorMessage} />
+
             <div>
                 <button onClick={() => setShowAll(!showAll)}>
                     show {showAll ? 'important': 'all'}
@@ -89,6 +116,7 @@ const App = () => {
                     />
                 <button type="submit"> save</button>
             </form>
+            <Footer />
         </div>
     )
 }

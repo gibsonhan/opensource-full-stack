@@ -69,7 +69,7 @@
     {
       "content": "a new note...",
       "date": "2019-10-08T02:47:30.293Z",
-      "important": true,
+      "important": false,
       "id": 12
     }
   ]
