@@ -1,6 +1,10 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
+
+//const fs = require('fs')
 const bodyParser = require('body-parser')
+//const path = require('path')
 
 let persons = [
     {
@@ -26,9 +30,16 @@ let persons = [
 ]
 
 app.use(bodyParser.json())
+morgan.token('string', function (req, res) {
+    const string =  JSON.stringify(req.body)
+    return string
+})
 
+app.use(morgan(':http-version :method :url :status :res[content-length] - response-time ms :string'))
+//Method URL Status content-length response time in MS and body
 app.get('/api/persons', (request, response) => {
     response.json(persons)
+    
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -60,12 +71,11 @@ const generateID = () => {
 }
 
 const exist = (name) => {
-    return persons.find(person => person.name.toLowerCase === name.toLowerCase)
+    return returnValue = persons.find(person => person.name.toLowerCase() === name.toLowerCase())
 }
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    console.log(body)
 
     if(!body.name ){
         return response.status(400).json({
@@ -92,16 +102,16 @@ app.post('/api/persons', (request, response) => {
     }
 
     persons = persons.concat(person)
-    console.log('person',person)
-    console.log('persons', persons)
     response.json(person)
 
+    
     //parse the request
     //check if basic param is there
     //create new objecct
     //add to server
     //return object is response
 })
+
 
 app.get('/info', (request, response) => {
     const numPeople = persons.length
@@ -111,6 +121,7 @@ app.get('/info', (request, response) => {
         <p>${date}</p>`
     )
 })
+
 
 const PORT = 3001
     app.listen(PORT, () => {
