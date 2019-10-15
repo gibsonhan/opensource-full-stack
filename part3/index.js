@@ -1,10 +1,9 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 
-//const fs = require('fs')
 const bodyParser = require('body-parser')
-//const path = require('path')
 
 let persons = [
     {
@@ -29,6 +28,9 @@ let persons = [
     }
 ]
 
+app.use(express.static(__dirname + '/build'))
+
+app.use(cors())
 app.use(bodyParser.json())
 morgan.token('string', function (req, res) {
     const string =  JSON.stringify(req.body)
@@ -39,7 +41,6 @@ app.use(morgan(':http-version :method :url :status :res[content-length] - respon
 //Method URL Status content-length response time in MS and body
 app.get('/api/persons', (request, response) => {
     response.json(persons)
-    
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -77,7 +78,7 @@ const exist = (name) => {
 app.post('/api/persons', (request, response) => {
     const body = request.body
 
-    if(!body.name ){
+    if(!body.name){
         return response.status(400).json({
             error: 'Must include name'
         })
@@ -123,7 +124,7 @@ app.get('/info', (request, response) => {
 })
 
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
     app.listen(PORT, () => {
         console.log(`Server is running at ${PORT}`)
 })
