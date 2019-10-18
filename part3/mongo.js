@@ -6,22 +6,22 @@ if ( process.argv.length < 3) {
 }
 
 if ( process.argv.length === 3) {
+    console.log('if statement for showAll')
     showAll()
-    process.exit(1)
 }
 
 if ( process.argv.length === 5) {
+    console.log('if statement for savePerson')
     savePerson()
-    process.exit(1)
 }
-
 // ---- main process below ----- //
 
 mongoConnect()
-
+    
 // ---- functions below   --------/
 
 function mongoConnect() {
+    //console.log('mongo connect')
     const password = process.argv[2]
     const url = 
         `mongodb+srv://fullstackNoob:${password}@cluster0-guhsy.mongodb.net/phonebook?retryWrites=true&w=majority`
@@ -36,6 +36,7 @@ function mongoConnect() {
 }
 
 function savePerson () {
+    console.log('save person function')
     const name = process.argv[3]    
     const number = process.argv[4]
 
@@ -64,6 +65,7 @@ function savePerson () {
 }
 
 function showAll() {
+    console.log('show all function')
     const Person = definePersonSchema()
     let print = 'phonebook:'
     console.log(print)
