@@ -45,7 +45,6 @@ app.get('/api/persons', (request, response) => {
     Person.find({})
         .then(persons => {
             response.json(persons)
-            console.log(typeof persons)
         })
         .catch(error => {
             console.log('Error', error)
@@ -105,23 +104,15 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-    const person = {
-        "name": body.name,
-        "number": body.number || 'Did Not Enter',
-        id: generateID()
-    }
+    const person = new Person({
+        name: body.name,
+        number: body.number,
+    })
 
-    persons = persons.concat(person)
-    response.json(person)
-
-    
-    //parse the request
-    //check if basic param is there
-    //create new objecct
-    //add to server
-    //return object is response
+    person.save().then(person => {
+        response.json(person.toJSON())
+    })
 })
-
 
 app.get('/info', (request, response) => {
     const numPeople = persons.length
