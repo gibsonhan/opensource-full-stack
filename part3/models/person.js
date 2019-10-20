@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const uniqueVaidator = require('mongoose-unique-validator')
 
-const url = process.env.MONGODB_URI
+const url = process.env.MONGODB_URL
 
 mongoose.set('useFindAndModify', false)
 
