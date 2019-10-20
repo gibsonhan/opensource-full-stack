@@ -98,8 +98,25 @@ app.post('/api/persons', (request, response) => {
     .catch(error => next(error))
 })
 
+app.put('/api/persons/:id', (request, response, next) => {
+    const id = request.params.id
+    const body = request.body
+
+    const person = {
+        name: body.name,
+        number: body.number,
+    }
+
+    Person.findByIdAndUpdate(id, person, { new: true })
+        .then(updatedPerson => {
+            response.json(updatedPerson.toJSON())
+        })
+        .catch(error => next(error))
+})
+
 app.get('/api/info', (request, response) => {
-    const numPeople = 10
+    const numberPeople = 10
+    const numPeople = persons.length
     const date = new Date()
     response.send(
         `<p>Phone book has info for ${numPeople} people </p>
@@ -122,7 +139,8 @@ const errorHandler = (error, request, response, next) => {
         return response.status(400).send({ error: 'malformatted id'})
     }
     else {
-        return response.status(404).send({error: error})
+        console.log(error)
+        //return response.status(404).send({error: error})
     }
 }
 
