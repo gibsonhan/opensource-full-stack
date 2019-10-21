@@ -10,7 +10,7 @@ const data = require('./testData')
         })
     })
 
-describe('total likes', () => {
+describe('Blog with most likes', () => {
     test('of empty list is zero', () => {
         const zeroBlogs = []
         const result = listHelper.totalLikes(zeroBlogs)
@@ -28,9 +28,23 @@ describe('total likes', () => {
     })  
 })
 
-describe('Favorite Blog', () => {
+describe('Favorite Blog Individual Blog', () => {
     test('Favorite blog check is titled: Canonical String Reduction by Mr. E . Dijkstrsa', () => {
         const result = listHelper.favoriteBlog(data.blogs)
         expect(result).toEqual(data.favorite)
+    })
+})
+
+describe('Author With Most Blog Test', () => {
+    test('most blog test', () => {
+        const result = listHelper.mostBlogs(data.blogs)
+        expect(result).toEqual(data.mostBlogs)
+    })
+})
+
+describe('Author with most likes', () => {
+    test('total most likes', () => {
+        const result = listHelper.mostLikes(data.blogs)
+        expect(result).toEqual(data.mostLikes)
     })
 })

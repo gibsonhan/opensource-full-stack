@@ -66,8 +66,20 @@ const favorite = {
     likes: 12
 }
 
+const mostBlogs = {
+    author: "Robert C. Martin",
+    blogs: 3
+}
+
+const mostLikes = {
+  author: "Edsger W. Dijkstra",
+  likes: 17
+}
+
 module.exports = { 
     listWithOneBlog,
      blogs,
-     favorite
+     favorite,
+     mostBlogs,
+     mostLikes
 }
