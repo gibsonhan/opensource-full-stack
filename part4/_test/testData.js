@@ -76,16 +76,10 @@ const mostLikes = {
   likes: 17
 }
 
-const hardData = [
-    {"_id":"5dacd720ec5bba185f720eef","title":"Hello","author":"Gibson","url":"www.gibsonhan.com","likes":100,"__v":0},
-    {"_id":"5dace60a2cae1924a22e4a26","title":"Hell1o","author":"Gibson","url":"www.gibsonhan.com","likes":100,"__v":0},
-    {"_id":"5dace6142cae1924a22e4a27","title":"Hel1l1o","author":"Gibson","url":"www.gibsonhan.com","likes":100,"__v":0}]
-
 module.exports = { 
     listWithOneBlog,
      blogs,
      favorite,
      mostBlogs,
-     mostLikes,
-     hardData
+     mostLikes
 }
