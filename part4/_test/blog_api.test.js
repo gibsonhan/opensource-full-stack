@@ -51,7 +51,7 @@ describe('REST API Testing', () => {
      * 3.Verify the content of blogs are saved correctly in blog 
      * 
      */
-    describe.only('Verify HTTP POST Resquest', () => {
+    describe('Verify HTTP POST Resquest', () => {
         /**
          * 1. sent post request w/ dummy Object?
          * ------
@@ -67,14 +67,41 @@ describe('REST API Testing', () => {
             const mongoBlogs = await helper.blogsInDb()
             expect(mongoBlogs.length).toBe(helper._blogs.length + 1)
 
-            
             for (const properties in helper._newBlog) {
                 properties === 'likes' 
                     ? expect(mongoBlogs[2].likes).toBe(helper._newBlog.likes)
                     : expect(mongoBlogs[2][properties]).toContain(helper._newBlog[properties]) 
-                    
                 }
+        })
+    })
 
+    describe('verify the likes property exist in request', () => {
+        test("check like properties", async () => {
+            
+            let response = await api.post('/api/blogs')
+                .send(helper._newBlogNoLikes)
+                .expect(201)
+                .expect('Content-Type', /application\/json/)
+            
+            expect(response.body.likes).toBeDefined()
+            expect(response.body.likes).toBe(0)
+        })
+        
+    })
+
+    /*
+        Durring TDDD you can refined skill by writing expectation of request and response objects    
+    */
+
+    describe.only('verify http post endpoint', () => {
+        test('check if title and url is missing', async () => {
+
+            const response = await api.post('/api/blogs')
+            .send(helper._newBlogNoTitleAndUrl)    
+                .expect('Content-Type', /json/)
+                .expect(400)
+            expect(response.body.title).not.toBeDefined()
+            expect(response.body.url).not.toBeDefined()
         })
     })
 

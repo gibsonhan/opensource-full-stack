@@ -22,15 +22,26 @@ const _newBlog = {
     likes: 999
 }
 
+const _newBlogNoLikes = {
+    title: "Mr. No Likes",
+    author: "Twice",
+    url: "LikelyLikely.com",
+}
+
+const _newBlogNoTitleAndUrl = {
+    author: "Mr. SandMan",
+    likes: 1902382
+}
+
 const blogsInDb = async () => {
     const blogs = await Blog.find({})
     return blogs.map(note => note.toJSON())
 }
 
-const checkIdProperty = (blogs) => {
+const checkIdProperty = async (blogs) => {
     let idExist = undefined
     
-    blogs.forEach(blog => {
+    await blogs.forEach(blog => {
         if(blog.hasOwnProperty('id') === true){
             idExist = true
         }
@@ -46,5 +57,7 @@ module.exports = {
     blogsInDb,
     _blogs,
     _newBlog,
+    _newBlogNoLikes,
+    _newBlogNoTitleAndUrl,
     checkIdProperty,
 }
