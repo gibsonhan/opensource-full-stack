@@ -20,7 +20,23 @@ const blogsInDb = async () => {
     return blogs.map(note => note.toJSON())
 }
 
+const checkIdProperty = (blogs) => {
+    let idExist = undefined
+    
+    blogs.forEach(blog => {
+        if(blog.hasOwnProperty('id') === true){
+            idExist = true
+        }
+        else {
+            idExist = undefined
+        }
+    })
+
+    return idExist
+}
+
 module.exports = {
     blogsInDb,
-    _blogsData
+    _blogsData,
+    checkIdProperty
 }
