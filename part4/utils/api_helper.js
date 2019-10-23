@@ -1,11 +1,11 @@
 const Blog = require('../models/Blog')
 
-const _blogsData = [
+const _blogs = [
     {
         title: "How Dogs Fly",
         author: "Mr. Ruff",
         url: "wwww.dogs are the best",
-        likes: "100"
+        likes: 100
     },
     {
         title: "How Cats Swim",
@@ -14,6 +14,13 @@ const _blogsData = [
         likes: 32
     }
 ]
+
+const _newBlog = {
+    title: "New Blog Test",
+    author: "Mr. New Guy",
+    url: "333.com",
+    likes: 999
+}
 
 const blogsInDb = async () => {
     const blogs = await Blog.find({})
@@ -37,6 +44,7 @@ const checkIdProperty = (blogs) => {
 
 module.exports = {
     blogsInDb,
-    _blogsData,
-    checkIdProperty
+    _blogs,
+    _newBlog,
+    checkIdProperty,
 }

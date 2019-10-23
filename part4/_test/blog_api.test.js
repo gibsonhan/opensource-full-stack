@@ -13,17 +13,17 @@ const helper = require('../utils/api_helper')
 beforeEach(async () => {
     await Blog.deleteMany({})
     
-    let blogObject = new Blog(helper._blogsData[0])
+    let blogObject = new Blog(helper._blogs[0])
     await blogObject.save()
 
-    blogObject = new Blog(helper._blogsData[1])
+    blogObject = new Blog(helper._blogs[1])
     await blogObject.save()
 })
 
 describe('REST API Testing', () => {
     test('All Blogs are loaded', async () => {
         const response = await api.get('/api/blogs')
-        expect(response.body.length).toBe(helper._blogsData.length)
+        expect(response.body.length).toBe(helper._blogs.length)
     })
 
     /**
@@ -36,14 +36,47 @@ describe('REST API Testing', () => {
      * 
      * (((Asking the right question is important)))
      * (((Being able to make prediction an expection of input and output)))
+     * 
+     * After thoughts--
+     * --> Using load dash to verify all object contains id?
      */
-    test.only('Verify that ID propery is returned', async () => {
+    test('Verify that ID propery is returned', async () => {
         const response = await api.get('/api/blogs')
-        //const result console.log(response.body[0].hasOwnProperty('_id'))
         expect(helper.checkIdProperty(response.body)).toBeDefined()
-        //expect(response.body[0]).toBeDefined('_id')
     })
 
+    /** 
+     * 1.Verifty HTTP Post Request -> create new Blog
+     * 2.Verify total number of blogs in system increase by one
+     * 3.Verify the content of blogs are saved correctly in blog 
+     * 
+     */
+    describe.only('Verify HTTP POST Resquest', () => {
+        /**
+         * 1. sent post request w/ dummy Object?
+         * ------
+         * rather than calling api.get request again, call the database directly because you are not testing the api get
+         * its important to understand what is being called and using the appropriate calls
+         */
+        test('verify one note successfully saved into database', async () => {
+            await api.post('/api/blogs')
+                .send(helper._newBlog)
+                .expect(201)
+                .expect('Content-Type', /application\/json/)
+
+            const mongoBlogs = await helper.blogsInDb()
+            expect(mongoBlogs.length).toBe(helper._blogs.length + 1)
+
+            
+            for (const properties in helper._newBlog) {
+                properties === 'likes' 
+                    ? expect(mongoBlogs[2].likes).toBe(helper._newBlog.likes)
+                    : expect(mongoBlogs[2][properties]).toContain(helper._newBlog[properties]) 
+                    
+                }
+
+        })
+    })
 
 })
 
