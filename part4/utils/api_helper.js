@@ -28,6 +28,13 @@ const _newBlogNoLikes = {
     url: "LikelyLikely.com",
 }
 
+const _updateBlog = {
+    title: "Delete Me",
+    author: "Mr. Delete",
+    url: 'deleteBlog.com',
+    likes: 33
+}
+
 const _newBlogNoTitleAndUrl = {
     author: "Mr. SandMan",
     likes: 1902382
@@ -59,5 +66,6 @@ module.exports = {
     _newBlog,
     _newBlogNoLikes,
     _newBlogNoTitleAndUrl,
+    _updateBlog,
     checkIdProperty,
 }
