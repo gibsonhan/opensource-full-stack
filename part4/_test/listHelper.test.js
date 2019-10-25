@@ -1,5 +1,5 @@
 const listHelper = require('../utils/list_helper')
-const data = require('./testData')
+const data = require('../utils/testData')
 
  describe('list helper Dummy Test', () => {
         test('dummy test returns one', () => {
