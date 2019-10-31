@@ -10,8 +10,9 @@ beforeEach( async () => {
     await User.deleteMany({})
 
     for(let user of helper._initalUsers){
-        let newUser = new User(user)
-        await newUser.save()
+        await api.post('/api/users')
+            .send(user)
+            .expect(204)
     }
 })
 

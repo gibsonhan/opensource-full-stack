@@ -5,6 +5,11 @@ const _blogs = [
         title: "How Dogs Fly",
         author: "Mr. Ruff",
         url: "wwww.dogs are the best",
+        user: {
+            username: 'testCase',
+            user: 'delete me',
+            id: '12093821083a'
+        },
         likes: 100
     },
     {

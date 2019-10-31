@@ -4,14 +4,6 @@ const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 
-const getAuthTokenFrom = (request) => {
-  const authorization = request.get('authorization')
-  if(authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
-
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
   //console.log('backendblogs', blogs)
@@ -21,13 +13,14 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response) => {
 
   const body = request.body
-  const decodedToken = jwt.verify(request.token, config.SECERT)
+ 
   
-  if(!request.token || !decodedToken.id) {
+  if(!request.token || request.token === undefined) {
       return response.status(401).json({ error: 'token missing or invalid'})
     }
 
   try {
+    const decodedToken = jwt.verify(request.token, config.SECERT)
     const user = await User.findById(decodedToken.id)
     const oneUser = user.toJSON() 
 
@@ -63,7 +56,7 @@ blogsRouter.put('/:id', async (request, response) => {
     url: body.url,
     likes: body.likes
   }
-  console.log('backend id', id)
+  
   try {
     let newObject = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
     response.status(200).json(newObject.toJSON())
@@ -76,10 +69,17 @@ blogsRouter.put('/:id', async (request, response) => {
 
 blogsRouter.delete('/:id', async (request, response) => {
   const id = request.params.id
+  const blog = await Blog.findById(id) 
   
+  decodedToken = jwt.verify(request.token, config.SECERT)
+  
+  if(decodedToken.username !== blog.user.username|| decodedToken.id !== blog.user.id) {
+    return response.status(401).json({error: 'Cannot Delete, Invalid Authorization token'})
+  }
+
   try {
     await Blog.findByIdAndRemove(id)
-    response.status(204).end()
+    response.status(202).json({ message: 'Blog was deleted'})
   }
   catch(exception) {
     response.status(404).json({ error: 'failed to delete blog' })

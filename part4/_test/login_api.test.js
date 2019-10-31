@@ -16,13 +16,6 @@ beforeEach( async() => {
         .send(user)
         .expect(204)
 
-    const usersInDb = async () => {
-        const users = await User.find({})
-        return users.map(user => user.toJSON())
-    }
-    
-    const getUsers = await usersInDb()
-    console.log(getUsers)
 })
 
 test('Login test Error', async() => {

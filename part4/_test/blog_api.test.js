@@ -45,9 +45,9 @@ describe('REST API Testing', () => {
     })
 })
 /
-describe.only('Verify HTTP POST Resquest', () => {
+describe('Verify HTTP POST Resquest', () => {
    
-    test.only('verify one note successfully saved into database', async () => {
+    test('verify one note successfully saved into database', async () => {
         
         const login = {
             username: 'LoginUser',
@@ -70,13 +70,7 @@ describe.only('Verify HTTP POST Resquest', () => {
         const addedBlog = blogsInDb[2]
         expect(addedBlog.likes).toBeDefined()
         expect(addedBlog.user).toBeDefined()
-        /*
-        for (const properties in helper._newBlog) {
-            properties === 'likes' 
-                ? expect(mongoBlogs[2].likes).toBe(helper._newBlog.likes)
-                : expect(mongoBlogs[2][properties]).toContain(helper._newBlog[properties]) 
-            }
-            */
+       
     })
 
     test('Invalid Token', async () => {
@@ -84,58 +78,35 @@ describe.only('Verify HTTP POST Resquest', () => {
             url: 'InvalidToken.com',
             title: 'No Token',
             author: 'Hello',
+            token: ' ',
             likes: 0,
-            token: 'failed'
         }
 
         const response = await api.post('/api/blogs')
             .send(newBlog)
-            .expect(400)
+            .expect(401)
 
-        expect(response.body.message).toContain('jwt must be provided')
-    })
-})
-
-describe('Verify the likes property exist in request', () => {
-    test("check like properties", async () => {
-        
-        let response = await api.post('/api/blogs')
-            .send(helper._newBlogNoLikes)
-            .expect(201)
-            .expect('Content-Type', /application\/json/)
-        
-        expect(response.body.likes).toBeDefined()
-        expect(response.body.likes).toBe(0)
-    })
-    
-})
-
-/*
-    Durring TDDD you can refined skill by writing expectation of request and response objects    
-    supertest.set and so forth: the con
-*/
-
-describe('verify http post endpoint', () => {
-    test('check if title and url is missing', async () => {
-
-        const response = await api.post('/api/blogs')
-        .send(helper._newBlogNoTitleAndUrl)    
-            .expect('Content-Type', /json/)
-            .expect(400)
-        expect(response.body.title).not.toBeDefined()
-        expect(response.body.url).not.toBeDefined()
+        expect(response.body.error).toContain('token missing or invalid')
     })
 })
 
 describe('verify http delete endpoint', () => {
-    test ('delete one post', async() => {
-
+    test('delete one post', async() => {
         const Blogs = await helper.blogsInDb()
         const firstblog = Blogs[0]
+        
+        const userToken = {
+            username: firstblog.user.username,
+            id: firstblog.user.id,
+        }
+
+        const token = jwt.sign(userToken, config.SECERT)
+        //console.log(token) 
 
         await api
             .delete(`/api/blogs/${firstblog.id}`)
-            .expect(204)
+            .set('Authorization', 'bearer ' + token)
+            .expect(202)
 
         const checkDB = await helper.blogsInDb()
         expect(checkDB.length).toBe(helper._blogs.length - 1)
@@ -155,6 +126,57 @@ describe('verify HTTP PUT Request', () => {
             .expect(200)
         
         expect(response.body.likes).toBe(helper._updateBlog.likes)
+    })
+})
+
+describe('Delete without blog Post', () => {
+        test('Fail to delete without a token', async () => {
+        const blogsInDb = await helper.blogsInDb()
+        const firstBlog = blogsInDb[0]
+        
+        const fakeUser = {
+            username: 'Mr.Fake Token',
+            id: 309802830283409280 
+        }
+
+        const token = jwt.sign(fakeUser, config.SECERT)
+        const response = await api.delete(`/api/blogs/${firstBlog.id}`)
+            .set('Authorization', 'bearer ' + token)      
+            .expect(401)
+
+        expect(response.body.error).toContain('Invalid Authorization token')
+    })
+
+    test('Successful Delete with Appropriate Token', async () => {
+        const login = {
+            username: 'LoginUser',
+            password: 'LoginUser',
+        }
+
+        const response = await api.post('/api/login')
+            .send(login)
+            .expect(200)
+
+        const token = response.body.token
+
+        await api.post('/api/blogs')
+            .set('Authorization', 'bearer ' + token)
+            .send(helper._newBlog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        const blogsInDb = await helper.blogsInDb()
+        const addedBlog = blogsInDb[2]
+
+        expect(blogsInDb.length).toBe(helper._blogs.length + 1)
+
+        const deleteResponse = await api.delete(`/api/blogs/${addedBlog.id}`)
+            .set('Authorization', 'bearer ' + token)
+            .expect(202) 
+        
+        expect(deleteResponse.body.message).toContain('Blog was deleted')
+        const blogsAfterDelete = await helper.blogsInDb()
+        expect(blogsAfterDelete.length).toBe(helper._blogs.length)
     })
 })
 

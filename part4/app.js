@@ -30,7 +30,6 @@ const requestLogger = (request, response, next) => {
 
 app.use(cors())
 app.use(bodyParser.json())
-app.use(requestLogger)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 
