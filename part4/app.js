@@ -7,6 +7,8 @@ const mongoose = require('mongoose')
 const config = require('./utils/config')
 const blogsRouter = require('./controllers/Blog')
 const usersRouter = require('./controllers/User')
+const loginRouter = require('./controllers/Login')
+
 
 console.log('connecting to', config.MongoUrl)
 console.log('process enviorment is', process.env.NODE_ENV)
@@ -24,5 +26,6 @@ app.use(bodyParser.json())
 
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
 
 module.exports = app
