@@ -3,13 +3,11 @@ const User = require('../models/User')
 const _initalUsers = [
     {
         username: 'JackTheRipper',
-        passwordHash: '9x9x119x',
         password: 'entering password',
         name: 'John Doe'
     },
     {
         username: 'HappyFeat',
-        passwordHash: '930438420340',
         password: 'safe password',
         name: 'Robin Hood'
     }

@@ -38,8 +38,7 @@ test('Login test Error', async() => {
     expect(response.body.error).toContain('invalid username or password')
 })
 
-test.only('Login success', async () => {
-
+test('Login success', async () => {
     const userLogin = {
         username: 'LoginUser',
         password: 'LoginUser'
@@ -51,6 +50,8 @@ test.only('Login success', async () => {
         .expect(200)
 
     expect(response.body.token).toBeDefined()
+    console.log(response.body)
+
 })
 
 afterAll( async () => {
