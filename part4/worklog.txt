@@ -1,0 +1,8 @@
+/*4.17 blog expansion
+1. modify adding new blogs -> 
+	any user from DB is deginated as creator
+	use populate -> to populate userObjectId
+
+2.Blogs' userObject = [populate by blogID]
+	
+*/

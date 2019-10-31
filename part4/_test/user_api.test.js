@@ -39,7 +39,7 @@ describe("User Creation: HTTP POST Request", () => {
         const addedUser = usersInDb[2]
         expect(addedUser.username).toBeDefined()
         expect(helper.noPassHash(addedUser)).not.toBeDefined()
-    
+        expect(addedUser.blogs).toBeDefined()
     })
     
     test('Username and Password length > 3', async () => {

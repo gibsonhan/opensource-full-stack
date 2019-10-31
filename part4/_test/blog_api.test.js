@@ -57,20 +57,25 @@ describe('Verify HTTP POST Resquest', () => {
      * rather than calling api.get request again, call the database directly because you are not testing the api get
      * its important to understand what is being called and using the appropriate calls
      */
-    test('verify one note successfully saved into database', async () => {
+    test.only('verify one note successfully saved into database', async () => {
         await api.post('/api/blogs')
             .send(helper._newBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
-        const mongoBlogs = await helper.blogsInDb()
-        expect(mongoBlogs.length).toBe(helper._blogs.length + 1)
-
+        const blogsInDb = await helper.blogsInDb()
+        expect(blogsInDb.length).toBe(helper._blogs.length + 1)
+        
+        const addedBlog = blogsInDb[2]
+        expect(addedBlog.likes).toBeDefined()
+        expect(addedBlog.user).toBeDefined()
+        /*
         for (const properties in helper._newBlog) {
             properties === 'likes' 
                 ? expect(mongoBlogs[2].likes).toBe(helper._newBlog.likes)
                 : expect(mongoBlogs[2][properties]).toContain(helper._newBlog[properties]) 
             }
+            */
     })
 })
 
