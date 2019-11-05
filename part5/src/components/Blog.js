@@ -7,7 +7,6 @@ const Blog = ({
   blog, 
   setMessage, 
   setShowMessage,
-  blogFormRef  
 }) => {
  
   const [visible, setVisible] = useState(false)
@@ -62,11 +61,11 @@ const Blog = ({
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blogStyle">
       <div onClick={()=> toggleVisibility()}>
         {blog.title} {blog.author}
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="displayBlog">
         <div>{blog.url}</div>
         <div>
           {likes}
