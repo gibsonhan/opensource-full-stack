@@ -2,53 +2,20 @@ import React, { useState } from 'react'
 import Blog from './Blog'
 import Message from './Message'
 import blogService from '../services/blogs'
+import Toggleable from './Toggleable'
+import CreateBlog from './CreateBlog'
 
 const BlogList = ({ user, setUser, blogs, setBlogs}) => {
-    const [title, setTitle] = useState('')
-    const [author, setAuthor] = useState('')
-    const [url, setUrl] = useState('')
-    
+      
+    const blogFormRef = React.createRef()
     const [showMessage, setShowMessage] = useState(null)
     const [message, setMessage] = useState('')
     const [mColor, setMColor] = useState('green')
-    
 
     const handleLogout = () => {
         window.localStorage.removeItem('LoggedInBlogUser')
         blogService.resetToken()
         setUser(null)
-    }
-    const handleCreate = async (e) => {
-        e.preventDefault()
-        try {
-
-            const newBlog = {
-                title: title,
-                author: author,
-                url: url
-            }
-
-            const response = await blogService.create(newBlog)
-            setBlogs(blogs.concat(response))
-            setMessage(`A New Blog: ${newBlog.title} by ${newBlog.author} added`)
-            setShowMessage(true)
-            setTimeout(() => {
-                setShowMessage(null)
-            }, 5000)
-        }
-        catch (exception) {
-            setMessage(exception.response.data.message)
-            setMColor('red')
-            setShowMessage(true)
-            setTimeout(() => {
-                setShowMessage(null)
-                setMColor('green')
-            }, 5000)
-        }
-
-        setTitle('')
-        setAuthor('')
-        setUrl('')
     }
     
     const showBlogs = () => {
@@ -58,6 +25,10 @@ const BlogList = ({ user, setUser, blogs, setBlogs}) => {
         }
     }
 
+    const handleBlogRef = () => {
+        blogFormRef.current.toggleVisibility()
+    }
+
     return (
         <div>
             <h1>Blogs</h1>
@@ -65,38 +36,17 @@ const BlogList = ({ user, setUser, blogs, setBlogs}) => {
             <div>{user.name} logged in :
                 <button onClick={() => handleLogout()}> Logout</button>
             </div>
-
-            <h2>Create New</h2>
-            <form onSubmit={handleCreate}>
-                <div> title
-                    <input
-                        type='text'
-                        value={title}
-                        name={"Title"}
-                        onChange={({ target }) => { setTitle(target.value) }}
+            <Toggleable buttonLabel="Create Blog" showBlogs={showBlogs()} ref={blogFormRef}>
+                <CreateBlog 
+                    blogs={blogs}
+                    setBlogs={setBlogs} 
+                    setMessage={setMessage} 
+                    setMColor={setMColor} 
+                    setShowMessage={setShowMessage}
+                    blogFormRef={handleBlogRef}
                     />
-                </div>
-                <div>
-                    author
-                    <input
-                        type='text'
-                        value={author}
-                        name='Author'
-                        onChange={({ target }) => { setAuthor(target.value) }}
-                    />
-                    </div>
-                <div>
-                    url
-                    <input
-                        type='text'
-                        value={url}
-                        name='Url'
-                        onChange={({ target }) => { setUrl(target.value) }}
-                    />
-                </div>
-                <button>Create</button>
-            </form>
-            {showBlogs()}
+            </Toggleable>
+            <button onClick={handleBlogRef}>Handle Ref</button>
         </div>
     )
 }
