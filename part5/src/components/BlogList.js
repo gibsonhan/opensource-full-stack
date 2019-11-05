@@ -20,8 +20,18 @@ const BlogList = ({ user, setUser, blogs, setBlogs}) => {
     
     const showBlogs = () => {
         if(blogs.length > 0 ) {
-            const userBlogs = blogs.filter(blog => blog.user.username === user.username)
-            return userBlogs.map(blog => <Blog key={blog.id} blog={blog}/> )
+            //const userBlogs = blogs.filter(blog => blog.user.username === user.username)
+            const userBlogs = blogs
+            userBlogs.sort((a, b) => {
+                return b.likes - a.likes
+            })
+
+            return userBlogs.map(blog => <Blog 
+                                            user={user}
+                                            key={blog.id} 
+                                            blog={blog} 
+                                            setShowMessage={setShowMessage}
+                                            setMessage={setMessage}/> )
         }
     }
 
@@ -43,7 +53,6 @@ const BlogList = ({ user, setUser, blogs, setBlogs}) => {
                     setMessage={setMessage} 
                     setMColor={setMColor} 
                     setShowMessage={setShowMessage}
-                    blogFormRef={handleBlogRef}
                     />
             </Toggleable>
             <button onClick={handleBlogRef}>Handle Ref</button>

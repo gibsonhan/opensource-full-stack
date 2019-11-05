@@ -8,7 +8,6 @@ const CreateBlog = ({
     setMColor, 
     setMessage, 
     setShowMessage,
-    blogFormRef    
     }) => {
 
     const [title, setTitle] = useState('')
