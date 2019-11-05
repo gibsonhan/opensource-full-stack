@@ -12,8 +12,7 @@ const Login = ({
     <div>
       <h1>Login in Application</h1>
       <form onSubmit={handleLogin}>
-        <div>
-                    username
+        <div>username
           <input
             type="text"
             value={username}
@@ -21,8 +20,7 @@ const Login = ({
             onChange={({ target }) => { setUsername(target.value) }}
           />
         </div>
-        <div>
-                    password
+        <div>password
           <input
             type="password"
             value={password}

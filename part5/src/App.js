@@ -66,8 +66,10 @@ const App = () => {
   return (
     <div>
     {(showMessage !== null) && <Message message={message} color={mColor} />}
+    <div className="test">{user}</div>
     {(user === null) 
       ? <Login 
+         className="login"
          password={password}
          setPassword={setPassword}
          username={username}
@@ -75,6 +77,7 @@ const App = () => {
          handleLogin={handleLogin} 
         /> 
       : <BlogList 
+          className="bloglist"
           user={user}
           setUser={setUser} 
           setBlogs={setBlogs}
