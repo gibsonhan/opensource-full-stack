@@ -2,7 +2,13 @@ import React, {useState} from 'react'
 
 import blogService from '../services/blogs'
 
-const Blog = ({user, blog, setMessage, setShowMessage }) => {
+const Blog = ({
+  user, 
+  blog, 
+  setMessage, 
+  setShowMessage,
+  blogFormRef  
+}) => {
  
   const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import PropType from 'prop-types'
 import blogService from '../services/blogs'
 
 const CreateBlog = ({
@@ -30,7 +30,7 @@ const CreateBlog = ({
             setTimeout(() => {
                 setShowMessage(null)
             }, 5000)
-
+        
         }
         catch (exception) {
             setMessage(exception.response.data.message)
@@ -80,6 +80,15 @@ const CreateBlog = ({
             </form>
         </div>
     )
+}
+
+CreateBlog.propTypes = {
+    blogs : PropType.array.isRequired,
+    setBlogs: PropType.func.isRequired,
+    setMColor: PropType.func.isRequired,
+    setMessage: PropType.func.isRequired,
+    setShowMessage: PropType.func.isRequired
+
 }
 
 export default CreateBlog
