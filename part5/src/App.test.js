@@ -2,8 +2,11 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { render, waitForElement } from '@testing-library/react'
 jest.mock('./services/blogs')
+import { prettyDOM } from '@testing-library/dom'
+
 import App from './App'
-//import BlogList from './BlogList'
+import Login from './components/Login'
+import BlogList from './components/BlogList'
 
 /** Write an integration test
  *  - user is not logged into applicaiton 
@@ -43,17 +46,21 @@ import App from './App'
         }
         
         localStorage.setItem('LoggedInBlogUser', JSON.stringify(user))
-        console.log(localStorage.getItem('LoggedInBlogUser'))
-        component.rerender(<App />)
+        component.rerender(<App user={user} />)
 
         await waitForElement(
             () => component.getByText('Login')
         )
         
         const bloglist = component.container.querySelector('.bloglist')
+        console.log(prettyDOM(bloglist))
         expect(bloglist).toBeDefined()
 
         const blogs = component.container.querySelectorAll('.blog')
-        expect(blogs.length).toBe(3)
+        expect(blogs.length).toBe(3) 
     })
 })
+
+/**
+ * Issue with the the rendering?
+ */

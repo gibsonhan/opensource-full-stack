@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropType from 'prop-types'
+
+import { useField } from '../hooks'
 import blogService from '../services/blogs'
 
 const CreateBlog = ({
@@ -10,17 +12,17 @@ const CreateBlog = ({
     setShowMessage,
     }) => {
 
-    const [title, setTitle] = useState('')
-    const [author, setAuthor] = useState('')
-    const [url, setUrl] = useState('')
-
+    const title = useField('text')
+    const author = useField('text')
+    const url = useField('text') 
+    
     const handleCreate = async (e) => {
         e.preventDefault()
         try {
             const newBlog = {
-                title: title,
-                author: author,
-                url: url
+                title: title.value,
+                author: author.value,
+                url: url.value
             }
 
             const response = await blogService.create(newBlog)
@@ -30,7 +32,10 @@ const CreateBlog = ({
             setTimeout(() => {
                 setShowMessage(null)
             }, 5000)
-        
+            
+            title.reset()
+            author.reset()
+            url.reset()
         }
         catch (exception) {
             setMessage(exception.response.data.message)
@@ -41,9 +46,6 @@ const CreateBlog = ({
                 setMColor('green')
             }, 5000)
         }
-        setTitle('')
-        setAuthor('')
-        setUrl('')
     } 
 
     return (
@@ -51,30 +53,15 @@ const CreateBlog = ({
             <h2>Create New</h2>
             <form onSubmit={handleCreate}>
                 <div> title
-                    <input
-                        type='text'
-                        value={title}
-                        name={"Title"}
-                        onChange={({ target }) => { setTitle(target.value) }}
-                    />
+                    <input { ...title.input() }/>
                 </div>
                 <div>
                     author
-                    <input
-                        type='text'
-                        value={author}
-                        name='Author'
-                        onChange={({ target }) => { setAuthor(target.value) }}
-                    />
+                    <input { ...author.input()}/>
                     </div>
                 <div>
                     url
-                    <input
-                        type='text'
-                        value={url}
-                        name='Url'
-                        onChange={({ target }) => { setUrl(target.value) }}
-                    />
+                    <input { ...url.input()}/>
                 </div>
                 <button>Create</button>
             </form>
