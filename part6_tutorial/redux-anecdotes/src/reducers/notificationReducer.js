@@ -1,10 +1,14 @@
+export const messageReducer = (message) => {
+    return({
+        type: 'DISPLAY_MESSAGE',
+        data: message
+    })
+}
 
-const initalState = ['Hello World']
-
-const notificationReducer = (state = initalState, action) => {
+const notificationReducer = (state = '', action) => {
     switch (action.type) {
-        case 'MESSAGE':
-            console.log(state)
+        case 'DISPLAY_MESSAGE':
+            return action.data 
         default:
             return state
     }
