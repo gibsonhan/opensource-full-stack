@@ -1,7 +1,6 @@
 import React from 'react'
 import { createReducer } from '../reducers/anecdoteReducer'
 const AnecdoteForm = (props) => {
-
     const create = (e) => {
         e.preventDefault()
         const newAnecdote = e.target.anecdote.value
