@@ -7,16 +7,17 @@ const Notification = (props) => {
     padding: 10,
     borderWidth: 1
   }
-
+  const message = props.store.getState().notifications
+  
   const getMessage = () => {
-    const message = props.store.getState().notifications
     if(message) {
       setTimeout(() => {
         props.store.dispatch(messageReducer(''))
-      }, 7000)
+      }, 5000)
       return message
     }
   }
+  if(!message) return <> </> 
   return (
     <div style={style}>
       {getMessage()}
