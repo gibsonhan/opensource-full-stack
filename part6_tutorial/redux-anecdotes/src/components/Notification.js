@@ -1,4 +1,5 @@
 import React from 'react'
+import { messageReducer } from '../reducers/notificationReducer'
 
 const Notification = (props) => {
   const style = {
@@ -6,9 +7,19 @@ const Notification = (props) => {
     padding: 10,
     borderWidth: 1
   }
+
+  const getMessage = () => {
+    const message = props.store.getState().notifications
+    if(message) {
+      setTimeout(() => {
+        props.store.dispatch(messageReducer(''))
+      }, 7000)
+      return message
+    }
+  }
   return (
     <div style={style}>
-      {props.store.getState().notifications}
+      {getMessage()}
     </div>
   )
 }

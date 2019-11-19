@@ -9,9 +9,6 @@ const AnecdoteList = (props) => {
     const vote = (id, anecdote) => {
         props.store.dispatch(voteReducer(id))
         props.store.dispatch(messageReducer(anecdote))
-        setTimeout(() => {
-            props.store.dispatch(messageReducer(''))
-        }, 5000)
     }
 
     return (

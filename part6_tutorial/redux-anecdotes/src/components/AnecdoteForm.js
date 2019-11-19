@@ -7,9 +7,6 @@ const AnecdoteForm = (props) => {
         const newAnecdote = e.target.anecdote.value
         props.store.dispatch(messageReducer(newAnecdote))
         props.store.dispatch(createReducer(newAnecdote))
-        setTimeout(() => {
-            props.store.dispatch(messageReducer(''))
-        }, 5000)
         e.target.anecdote.value = ''
     }
 
