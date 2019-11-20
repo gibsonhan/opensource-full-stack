@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { messageReducer } from '../reducers/notificationReducer'
 
 const Notification = (props) => {
@@ -7,12 +8,12 @@ const Notification = (props) => {
     padding: 10,
     borderWidth: 1
   }
-  const message = props.store.getState().notifications
+  const message = props.notification
   
   const getMessage = () => {
     if(message) {
       setTimeout(() => {
-        props.store.dispatch(messageReducer(''))
+        props.messageReducer('')
       }, 5000)
       return message
     }
@@ -25,7 +26,20 @@ const Notification = (props) => {
   )
 }
 
-export default Notification
+const mapStateToProps = state => {
+  return {
+    notification: state.notification
+  }
+}
+
+const mapDispatchToProps = {
+  messageReducer
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Notification)
 
 /**
  * Exercise 6.9

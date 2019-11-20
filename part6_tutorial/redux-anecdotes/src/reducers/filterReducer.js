@@ -5,7 +5,7 @@ export const setFilterReducer = filter => {
     }
 }
 
-const filterReducer = (state = '', action) => {
+const filterReducer = (state = "", action) => {
     switch(action.type) {
         case 'UPDATE_FILTER':
             return action.data

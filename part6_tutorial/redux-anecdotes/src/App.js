@@ -2,11 +2,11 @@ import React from 'react';
 import AnecdoteList from './components/AnecdoteList';
 import Notification from './components/Notification'
 
-const App = (props) => {
+const App = () => {
   return(
     <div>
-      <Notification store={props.store}/>
-      <AnecdoteList store={props.store}/>
+      <Notification />
+      <AnecdoteList />
     </div>
   )
 }
