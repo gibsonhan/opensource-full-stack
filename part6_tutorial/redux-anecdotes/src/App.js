@@ -3,16 +3,13 @@ import { connect } from 'react-redux'
 import AnecdoteList from './components/AnecdoteList'
 import Notification from './components/Notification'
 import AnecdoteForm from './components/AnecdoteForm'
-import anecdoteService from './services/anecdote'
 
 import { initialAnecdotes } from './reducers/anecdoteReducer'
 
 const App = (props) => {
   useEffect(() => {
-    anecdoteService
-      .getAll()
-      .then(anecdotes => props.initialAnecdotes(anecdotes)) 
-  }, [props]) // unsure why this solve the prop dependency issue
+    props.initialAnecdotes()
+  }, [props]) 
 
   return(
     <div>

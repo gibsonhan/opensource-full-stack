@@ -1,15 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { voteReducer } from '../reducers/anecdoteReducer'
-import { messageReducer } from '../reducers/notificationReducer'
+import { setNotification } from '../reducers/notificationReducer'
 import Anecodote from './Anecdote'
 import Filter from './Filter'
 
 const AnecdoteList = (props) => {
 
-    const vote = (id, anecdote) => {
-        props.voteReducer(id)
-        props.messageReducer(anecdote)
+    const vote = (anecdote) => {
+        props.voteReducer(anecdote)
+        props.setNotification(`you voted for ${anecdote.content}`, 10)
     }
 
     const display = (anecdotes) => {
@@ -18,7 +18,7 @@ const AnecdoteList = (props) => {
                     key={anecdote.id}
                     content={anecdote.content}
                     votes={anecdote.votes}
-                    handleVote={() => {vote(anecdote.id, anecdote.content)}}
+                    handleVote={() => {vote(anecdote)}}
                 />
             ) 
     }
@@ -47,7 +47,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps ={
     voteReducer,
-    messageReducer
+    setNotification,
 }
 
 // Need to practice the HOF with JS
