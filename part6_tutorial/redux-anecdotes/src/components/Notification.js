@@ -9,16 +9,16 @@ const Notification = (props) => {
     borderWidth: 1
   }
   const message = props.notification
-  
+
   const getMessage = () => {
-    if(message) {
+    if (message) {
       setTimeout(() => {
         props.messageReducer('')
       }, 5000)
       return message
     }
   }
-  if(!message) return <> </> 
+  if (!message) return <> </>
   return (
     <div style={style}>
       {getMessage()}
@@ -40,10 +40,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Notification)
-
-/**
- * Exercise 6.9
- * 1. change application exisiting reducer 
- * 2. Create a seperate reducers for new functionality and refactor applicaiton  -> uses combined reducer as howsn
- * 3. Display inital value set for the message in the notification reducer
- */
