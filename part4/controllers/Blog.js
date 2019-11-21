@@ -6,14 +6,11 @@ const config = require('../utils/config')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
-  //console.log('backendblogs', blogs)
   response.json(blogs.map(blog => blog.toJSON()))
 })
 
 blogsRouter.post('/', async (request, response) => {
-
   const body = request.body
- 
   
   if(!request.token || request.token === undefined) {
       return response.status(401).json({ error: 'token missing or invalid'})
@@ -48,7 +45,6 @@ blogsRouter.post('/', async (request, response) => {
 
 blogsRouter.put('/:id', async (request, response) => {
   const body = request.body
-  const id = request.params.id
   
   const blog = {
     title: body.title,
@@ -62,6 +58,7 @@ blogsRouter.put('/:id', async (request, response) => {
     response.status(200).json(newObject.toJSON())
   }
   catch(exception) {
+    console.log(exception)
     console.log('failed to update', exception)
     response.status(404).json({ error: exception })
   }

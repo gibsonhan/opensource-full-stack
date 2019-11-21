@@ -59,7 +59,7 @@ describe('Verify HTTP POST Resquest', () => {
             .expect(200)
 
         await api.post('/api/blogs')
-            .set('Authorization', 'bearer ' + response.body.token)
+            .set('Authorization', 'Bearer ' + response.body.token)
             .send(helper._newBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
@@ -105,7 +105,7 @@ describe('verify http delete endpoint', () => {
 
         await api
             .delete(`/api/blogs/${firstblog.id}`)
-            .set('Authorization', 'bearer ' + token)
+            .set('Authorization', 'Bearer ' + token)
             .expect(202)
 
         const checkDB = await helper.blogsInDb()
@@ -141,7 +141,7 @@ describe('Delete without blog Post', () => {
 
         const token = jwt.sign(fakeUser, config.SECERT)
         const response = await api.delete(`/api/blogs/${firstBlog.id}`)
-            .set('Authorization', 'bearer ' + token)      
+            .set('Authorization', 'Bearer ' + token)      
             .expect(401)
 
         expect(response.body.error).toContain('Invalid Authorization token')
@@ -160,7 +160,7 @@ describe('Delete without blog Post', () => {
         const token = response.body.token
 
         await api.post('/api/blogs')
-            .set('Authorization', 'bearer ' + token)
+            .set('Authorization', 'Bearer ' + token)
             .send(helper._newBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
@@ -171,7 +171,7 @@ describe('Delete without blog Post', () => {
         expect(blogsInDb.length).toBe(helper._blogs.length + 1)
 
         const deleteResponse = await api.delete(`/api/blogs/${addedBlog.id}`)
-            .set('Authorization', 'bearer ' + token)
+            .set('Authorization', 'Bearer ' + token)
             .expect(202) 
         
         expect(deleteResponse.body.message).toContain('Blog was deleted')

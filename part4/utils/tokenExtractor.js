@@ -4,9 +4,6 @@ const tokenExtrator = (request, response, next) => {
         let token = authorization.substring(7)
         request.token = token 
     }
-    else {
-        request.token = undefined
-    }
     next()
 }
 
