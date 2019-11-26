@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
   BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
+  Route, Link, withRouter
 } from 'react-router-dom'
 
 const Menu = () => {
@@ -73,6 +73,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    props.setNotification(content)
+    console.log(content, 'should have set notificaiton')
     props.history.push('/')
   }
 
@@ -138,14 +140,27 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
+  const displayNotification = () => {
+    setTimeout(() => {
+      setNotification('')
+    }, 10000)
+    return (<p>{notification}</p>)
+  }
+  const Create = withRouter(CreateNew)
+
   return (
     <div>
       <Router>
         <h1>Software anecdotes</h1>
           <Menu />
+          {
+            (notification.length!== 0) 
+              ? displayNotification()
+              : <p></p>
+          }
           <Route exact path ="/" render={()=> <AnecdoteList anecdotes={anecdotes}/>} />
           <Route path ="/about" render={()=> <About />} />
-          <Route exact path="/create" render={()=> <CreateNew addNew={addNew} />} /> 
+          <Route exact path="/create" render={()=> <Create addNew={addNew} setNotification={setNotification} />} /> 
           <Route exact path="/anecdotes/:id" render={({ match }) =>
             <Anecdote anecdote={anecdoteById(match.params.id)} />
           }/>
