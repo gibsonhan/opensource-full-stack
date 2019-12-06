@@ -144,7 +144,7 @@ const App = () => {
     setTimeout(() => {
       setNotification('')
     }, 10000)
-    return (<p>{notification}</p>)
+    return (<p> a new anecodte {notification} created!</p>)
   }
   const Create = withRouter(CreateNew)
 
