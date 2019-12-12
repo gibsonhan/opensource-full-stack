@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
+
 import Blog from './Blog'
 import Message from './Message'
 import blogService from '../services/blogs'
 import Toggleable from './Toggleable'
 import CreateBlog from './CreateBlog'
 
-const BlogList = ({ user, setUser, blogs, setBlogs }) => {
+const BlogList = (props) => {
 
+  const { user, setUser, blogs, setBlogs } = props
   const blogFormRef = React.createRef(null)
   const [showMessage, setShowMessage] = useState(null)
   const [message, setMessage] = useState('')
@@ -17,28 +20,27 @@ const BlogList = ({ user, setUser, blogs, setBlogs }) => {
     blogService.resetToken()
     setUser(null)
   }
-
+  
   const showBlogs = () => {
-    if(blogs.length > 0 ) {
-      //const userBlogs = blogs.filter(blog => blog.user.username === user.username)
-      const userBlogs = blogs
-      userBlogs.sort((a, b) => {
+    const bloglist = props.bloglist;
+    if(bloglist.length > 0 ) {
+      
+      //There is an issue with this?
+      bloglist.sort((a, b) => {
         return b.likes - a.likes
       })
 
-      return userBlogs.map(blog => <Blog
-        user={user}
+      return bloglist.map(blog => <Blog
         key={blog.id}
         blog={blog}
-        setShowMessage={setShowMessage}
-        setMessage={setMessage}/> )
+        /> )
     }
   }
 
   const handleBlogRef = () => {
     blogFormRef.current.toggleVisibility()
   }
-
+  console.log(props.bloglist)
   return (
     <div>
       <h1>Blogs</h1>
@@ -47,17 +49,18 @@ const BlogList = ({ user, setUser, blogs, setBlogs }) => {
         <button onClick={() => handleLogout()}> Logout</button>
       </div>
       <Toggleable buttonLabel="Create Blog" showBlogs={showBlogs()} ref={blogFormRef}>
-        <CreateBlog
-          blogs={blogs}
-          setBlogs={setBlogs}
-          setMessage={setMessage}
-          setMColor={setMColor}
-          setShowMessage={setShowMessage}
-          blogFormRef={handleBlogRef}
-        />
+        <CreateBlog blogFormRef={handleBlogRef}/>
       </Toggleable>
       <button onClick={handleBlogRef}>Handle Ref</button>
     </div>
   )
 }
-export default BlogList
+
+const mapStateToProps = (state) => {
+  return { bloglist: state.blogs }
+}
+
+export default connect (
+  mapStateToProps,
+  null
+)(BlogList)

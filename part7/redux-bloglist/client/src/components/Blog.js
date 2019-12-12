@@ -1,18 +1,12 @@
 import React, {useState} from 'react'
+import { connect } from 'react-redux'
+import { vote, remove } from '../reducers/blog'
 
-import blogService from '../services/blogs'
-
-const Blog = ({
-  user, 
-  blog, 
-  setMessage, 
-  setShowMessage,
-}) => {
- 
-  const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
+const Blog = (props) => {
+  const { user, author, title, likes, url} = props.blog
+  const [visible, setVisible]= useState(false)
   const showWhenVisible = {display: visible ? '' : 'none'}
-
+  
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -26,36 +20,19 @@ const Blog = ({
   }
 
   const handleLike = async () => {
-    const updateObject = {
-      ...blog,
-      likes: likes+1
-    }
-    const blogID = blog.id
-    let response = await blogService.update(blogID, updateObject)
-    setMessage('Like + 1')
-    setLikes(response.likes)
-    setShowMessage(true)
-    setTimeout(() => {
-      setMessage('')
-      setShowMessage(null)
-    }, 5000)
+    props.vote(props.blog)
   }
 
   const handleRemove = async () => {
-    const remove = window.confirm(`Do you want to delete blog ${blog.title} by ${blog.author}`)
+    const remove = window.confirm(`Do you want to delete blog ${title} by ${author}`)
     if(remove) {
-      const response = await blogService.remove(blog.id)
-      setMessage(response.message)
-      setShowMessage(true)
-      setTimeout(() => {
-        setMessage('')
-        setShowMessage(null)
-    }, 5000)
+      props.remove(props.blog)
     }
   }
 
   const displayDelete = () => {
-    if(user.username === blog.user.username) {
+    const curr = window.localStorage.getItem('LoggedInBlogUser')
+    if(curr.username === user.username) {
       return <button onClick={handleRemove}>Remove</button>
     }
   }
@@ -63,15 +40,15 @@ const Blog = ({
   return (
     <div style={blogStyle} className="blog">
       <div onClick={()=> toggleVisibility()}>
-        {blog.title} {blog.author}
+        {title} {author}
       </div>
       <div style={showWhenVisible} className="displayBlog">
-        <div>{blog.url}</div>
+        <div>{url}</div>
         <div>
           {likes}
           <button onClick={handleLike}>Like this Blog</button>
         </div>
-        <div>Added by {blog.user.name}</div>
+        <div>Added by {user.name}</div>
         {displayDelete()}  
       </div>
     </div>
@@ -79,4 +56,12 @@ const Blog = ({
   )
 }
 
-export default Blog
+const mapDispatchToProps = {
+  vote,
+  remove
+}
+
+export default connect (
+  null,
+  mapDispatchToProps,
+)(Blog)

@@ -4,13 +4,7 @@ import PropType from 'prop-types'
 import { useField } from '../hooks'
 import blogService from '../services/blogs'
 
-const CreateBlog = ({
-    blogs,
-    setBlogs,
-    setMColor, 
-    setMessage, 
-    setShowMessage,
-    }) => {
+const CreateBlog = () => {
 
     const title = useField('text')
     const author = useField('text')
@@ -25,32 +19,19 @@ const CreateBlog = ({
                 url: url.value
             }
 
-            const response = await blogService.create(newBlog)
-            setBlogs(blogs.concat(response))
-            setMessage(`A New Blog: ${newBlog.title} by ${newBlog.author} added`)
-            setShowMessage(true)
-            setTimeout(() => {
-                setShowMessage(null)
-            }, 5000)
-            
             title.reset()
             author.reset()
             url.reset()
         }
         catch (exception) {
-            setMessage(exception.response.data.message)
-            setMColor('red')
-            setShowMessage(true)
-            setTimeout(() => {
-                setShowMessage(null)
-                setMColor('green')
-            }, 5000)
+            console.long(exception)
         }
     } 
 
     return (
         <div>
             <h2>Create New</h2>
+            {console.log(title.value)}
             <form onSubmit={handleCreate}>
                 <div> title
                     <input { ...title.input() }/>
