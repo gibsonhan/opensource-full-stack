@@ -1,10 +1,13 @@
 import React from 'react'
-import PropType from 'prop-types'
+import { connect } from 'react-redux'
 
+import { create } from '../reducers/blog'
+import { sendMessage } from '../reducers/notification'
 import { useField } from '../hooks'
+
 import blogService from '../services/blogs'
 
-const CreateBlog = () => {
+const CreateBlog = (props) => {
 
     const title = useField('text')
     const author = useField('text')
@@ -16,22 +19,25 @@ const CreateBlog = () => {
             const newBlog = {
                 title: title.value,
                 author: author.value,
-                url: url.value
+                url: url.url,
             }
-
+            await props.create(newBlog)
+        }
+        catch (exception) {
+            props.sendMessage(exception.response.data.message)
+        }
+        finally {
+            console.log('finally')
             title.reset()
             author.reset()
             url.reset()
         }
-        catch (exception) {
-            console.long(exception)
-        }
+      
     } 
 
     return (
         <div>
             <h2>Create New</h2>
-            {console.log(title.value)}
             <form onSubmit={handleCreate}>
                 <div> title
                     <input { ...title.input() }/>
@@ -50,13 +56,12 @@ const CreateBlog = () => {
     )
 }
 
-CreateBlog.propTypes = {
-    blogs : PropType.array.isRequired,
-    setBlogs: PropType.func.isRequired,
-    setMColor: PropType.func.isRequired,
-    setMessage: PropType.func.isRequired,
-    setShowMessage: PropType.func.isRequired
-
+const mapDispatchToProps = {
+    create,
+    sendMessage,
 }
 
-export default CreateBlog
+export default connect(
+    null,
+    mapDispatchToProps
+)(CreateBlog)

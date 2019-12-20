@@ -17,25 +17,31 @@ const App = (props) => {
       props.get_initalBlogs()
       const userToken = JSON.parse(userTokenJSON) // this is seomthing I need to review
       blogService.setToken(userToken.token) 
+      setUser(userToken)
     }
   }, [])
-
   return (
     <div>
     <Message />
-    {(user === null) 
+
+    {(!user) 
       ? <Login 
          className="login"
-        /> 
+         setUser={setUser}
+       /> 
       : <BlogList 
           className="bloglist"
+          setUser={setUser}
         />
     }
     </div>
   )
 }
+const mapStateToProps = (state) => {
+  return { user: state.user }
+}
 
 export default connect(
-  null,
+  mapStateToProps,
   {get_initalBlogs}
 )(App)

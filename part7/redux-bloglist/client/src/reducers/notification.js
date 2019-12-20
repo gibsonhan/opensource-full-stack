@@ -4,22 +4,28 @@ export const clearMessage = () => {
 			dispatch({
 				type: 'CLEAR_MESSAGE'
 			})
-		}, 5000)
+		}, 10000)
 	}
 }
 
 export const sendMessage = (message, color) => {
-	return ({
-		type: 'CREATE_MESSAGE',
+	return (dispatch) => {
+		dispatch({
+			type: 'CREATE_MESSAGE',
 			payload: {
 				message,
 				color
 			}
-	})
+		})
+		setTimeout(() => {
+			dispatch({
+				type: 'CLEAR_MESSAGE' 
+			})
+		}, 5000)
+	}
 }
 
 const messageReducer = (state = '', action) => {
-	console.log(action.type)
 	switch(action.type) {
 		case 'CREATE_MESSAGE':
 			return action.payload 

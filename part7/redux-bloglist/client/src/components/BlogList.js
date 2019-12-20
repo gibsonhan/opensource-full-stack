@@ -1,24 +1,21 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import Blog from './Blog'
-import Message from './Message'
 import blogService from '../services/blogs'
 import Toggleable from './Toggleable'
 import CreateBlog from './CreateBlog'
 
+import { logoutUser } from '../reducers/login'
+
 const BlogList = (props) => {
 
-  const { user, setUser, blogs, setBlogs } = props
   const blogFormRef = React.createRef(null)
-  const [showMessage, setShowMessage] = useState(null)
-  const [message, setMessage] = useState('')
-  const [mColor, setMColor] = useState('green')
-
   const handleLogout = () => {
     window.localStorage.removeItem('LoggedInBlogUser')
     blogService.resetToken()
-    setUser(null)
+    props.setUser('')
+    props.logoutUser()
   }
   
   const showBlogs = () => {
@@ -44,8 +41,7 @@ const BlogList = (props) => {
   return (
     <div>
       <h1>Blogs</h1>
-      {(showMessage !== null) && <Message message={message} color = {mColor} />}
-      <div>{user.name} logged in :
+      <div>{"Name"} logged in :
         <button onClick={() => handleLogout()}> Logout</button>
       </div>
       <Toggleable buttonLabel="Create Blog" showBlogs={showBlogs()} ref={blogFormRef}>
@@ -60,7 +56,11 @@ const mapStateToProps = (state) => {
   return { bloglist: state.blogs }
 }
 
+const mapDispatchToProps = {
+  logoutUser,
+}
+
 export default connect (
   mapStateToProps,
-  null
+  mapDispatchToProps,
 )(BlogList)
