@@ -1,10 +1,12 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { useField } from '../hooks'
 
+import { sendMessage, clearMessage } from '../reducers/notification'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
-const Login = ({setUser, setMessage, setShowMessage, setMColor}) => {
+const Login = (props) => {
   const username = useField('text')
   const password = useField('text')
   
@@ -22,23 +24,15 @@ const Login = ({setUser, setMessage, setShowMessage, setMColor}) => {
         .setItem('LoggedInBlogUser', JSON.stringify(user))
 
       blogService.setToken(user.token)
-      setUser(user)
+      //setUser(user)
     }
 
     catch(exception) {
-      setMessage(exception.response.data.error)
-      setMColor('red')
-      setShowMessage(true)
-      
-      await setTimeout(()=> {
-        setShowMessage(null)
-        setMColor('red')  
-      }, 5000)
-
+      props.sendMessage(exception.response.data.error, 'red')
+      props.clearMessage()
       username.reset()
       password.reset()
     }
-
   }
 
   return (
@@ -57,4 +51,12 @@ const Login = ({setUser, setMessage, setShowMessage, setMColor}) => {
   )
 }
 
-export default Login
+const mapDispatchToProp = {
+  sendMessage,
+  clearMessage,
+}
+
+export default connect(
+  null,
+  mapDispatchToProp,
+)(Login)

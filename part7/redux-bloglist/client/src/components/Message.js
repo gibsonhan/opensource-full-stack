@@ -1,19 +1,30 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-const Message = ({ message, color }) => {
-
+const Message = (props) => {
   const messageStyle = {
-    color: color,
+    color: props.message.color || 'red',
     borderStyle: 'solid',
     borderRadius: '5px',
     font:'16',
     padding: 10,
   }
+  if(!props.message.message) {
+    return <></>
+  } 
+  console.log(props)
   return(
     <div style={messageStyle}>
-      {message}
+      {props.message.message}
     </div>
   )
 }
 
-export default Message
+const mapStateToProps = (state) => {
+  return { message: state.message }
+}
+
+export default connect(
+  mapStateToProps,
+  null,
+)(Message)

@@ -51,7 +51,8 @@ export const remove = (object) => {
 			})
 	}
 }
-const reducer = (state = [], action) => {
+
+const blogReducer = (state = [], action) => {
 	switch(action.type) {
 		case 'INITAL_BLOGS':
 			return action.payload
@@ -76,4 +77,4 @@ const reducer = (state = [], action) => {
 	}
 }
 
-export default reducer
+export default blogReducer;

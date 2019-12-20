@@ -1,24 +1,33 @@
-/*export const message = (message) => {
-	return dispatch({
-		type: 'CREATE_NOTIFICATION',
-		payload: messaage
+export const clearMessage = () => {
+	return async dispatch => {
+		await setTimeout(() => {
+			dispatch({
+				type: 'CLEAR_MESSAGE'
+			})
+		}, 5000)
+	}
+}
+
+export const sendMessage = (message, color) => {
+	return ({
+		type: 'CREATE_MESSAGE',
+			payload: {
+				message,
+				color
+			}
 	})
 }
 
-export const reset = () => {
-	return dispatch({
-		type: 'RESET_NOTIFICATION'
-	})
-}
-
-export default reducer = (state = '', action) => {
-	switch(action) {
-		case 'DISPLAY_NOTIFICATION':
-			return action.payload
-		case 'RESET_NOTIFICATION':
-			return action.payload;
+const messageReducer = (state = '', action) => {
+	console.log(action.type)
+	switch(action.type) {
+		case 'CREATE_MESSAGE':
+			return action.payload 
+		case 'CLEAR_MESSAGE':
+			return '';
 		default:
 			return state
  }
 }
-*/
+
+export default messageReducer;
