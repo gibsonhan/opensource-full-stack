@@ -47,7 +47,10 @@ export const remove = (object) => {
 		const response = await blogService.remove(object.id)
 		dispatch({
 				type: 'REMOVE_BLOG',
-				payload: response,
+				payload: {
+					response,
+					id: object.id
+				},
 			})
 	}
 }
@@ -70,7 +73,8 @@ const blogReducer = (state = [], action) => {
 			return [...state, action.payload]
 		 
 		case 'REMOVE_BLOG':
-				console.log(action.payload.id)
+			return state.filter(object => object.id !== action.payload.id)
+
 		default:
 			return state
 	}

@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { connect } from 'react-redux'
 import { vote, remove } from '../reducers/blog'
+import { sendMessage } from '../reducers/notification'
 
 const Blog = (props) => {
   const { user, author, title, likes, url} = props.blog
@@ -20,13 +21,15 @@ const Blog = (props) => {
   }
 
   const handleLike = async () => {
-    props.vote(props.blog)
+    await props.vote(props.blog)
+    props.sendMessage(`${title} +1 vote`, 'green', 5)
   }
 
   const handleRemove = async () => {
     const remove = window.confirm(`Do you want to delete blog ${title} by ${author}`)
     if(remove) {
       props.remove(props.blog)
+      props.sendMessage(`${title} by ${author} was removed`, 'green', 10)
     }
   }
 
@@ -49,8 +52,7 @@ const Blog = (props) => {
           <button onClick={handleLike}>Like this Blog</button>
         </div>
         <div>Added by {user.name}</div>
-        { displayDelete()
-        }  
+        { displayDelete() }  
       </div>
     </div>
 
@@ -59,7 +61,8 @@ const Blog = (props) => {
 
 const mapDispatchToProps = {
   vote,
-  remove
+  remove,
+  sendMessage,
 }
 
 export default connect (
