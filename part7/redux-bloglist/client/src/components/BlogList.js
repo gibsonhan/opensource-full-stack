@@ -14,6 +14,7 @@ const BlogList = (props) => {
   const handleLogout = () => {
     window.localStorage.removeItem('LoggedInBlogUser')
     blogService.resetToken()
+    
     props.setUser('')
     props.logoutUser()
   }
@@ -37,17 +38,16 @@ const BlogList = (props) => {
   const handleBlogRef = () => {
     blogFormRef.current.toggleVisibility()
   }
-  console.log(props.bloglist)
+  console.log(props)
   return (
     <div>
       <h1>Blogs</h1>
-      <div>{"Name"} logged in :
+      <div>{props.user.name} logged in :
         <button onClick={() => handleLogout()}> Logout</button>
       </div>
       <Toggleable buttonLabel="Create Blog" showBlogs={showBlogs()} ref={blogFormRef}>
         <CreateBlog blogFormRef={handleBlogRef}/>
       </Toggleable>
-      <button onClick={handleBlogRef}>Handle Ref</button>
     </div>
   )
 }

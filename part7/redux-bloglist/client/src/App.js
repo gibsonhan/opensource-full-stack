@@ -32,6 +32,7 @@ const App = (props) => {
       : <BlogList 
           className="bloglist"
           setUser={setUser}
+          user={user}
         />
     }
     </div>

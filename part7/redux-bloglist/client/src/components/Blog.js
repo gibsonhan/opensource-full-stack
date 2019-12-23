@@ -31,12 +31,12 @@ const Blog = (props) => {
   }
 
   const displayDelete = () => {
-    const curr = window.localStorage.getItem('LoggedInBlogUser')
+    let curr = window.localStorage.getItem('LoggedInBlogUser')
+    curr = JSON.parse(curr)
     if(curr.username === user.username) {
       return <button onClick={handleRemove}>Remove</button>
     }
   }
-
   return (
     <div style={blogStyle} className="blog">
       <div onClick={()=> toggleVisibility()}>
@@ -49,7 +49,8 @@ const Blog = (props) => {
           <button onClick={handleLike}>Like this Blog</button>
         </div>
         <div>Added by {user.name}</div>
-        {displayDelete()}  
+        { displayDelete()
+        }  
       </div>
     </div>
 

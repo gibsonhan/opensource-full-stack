@@ -12,7 +12,6 @@ const Message = (props) => {
   if(!props.message.message) {
     return <></>
   } 
-  console.log(props)
   return(
     <div style={messageStyle}>
       {props.message.message}

@@ -9,7 +9,6 @@ const getAll = async () => {
 }
 
 const create = async (newObject) => {
-  console.log('inside blog service', newObject)
   const config = {
     headers: { Authorization: token },
   }

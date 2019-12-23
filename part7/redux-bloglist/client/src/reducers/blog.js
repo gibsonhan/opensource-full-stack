@@ -32,9 +32,9 @@ export const vote = (object) => {
 }
 
 export const create = (object) => {
-	console.log('insider create reducer function')
 	return async dispatch => {
 		const response = await blogService.create(object)
+		console.log('inside dispatch', response)
 		dispatch({
 			type: 'CREATE_BLOG',
 			payload: response
@@ -67,8 +67,7 @@ const blogReducer = (state = [], action) => {
 				object.id === id ? updateObject : object)
 		
 		case 'CREATE_BLOG':
-			console.log('reducer should create', action.payload)
-			return state
+			return [...state, action.payload]
 		 
 		case 'REMOVE_BLOG':
 				console.log(action.payload.id)

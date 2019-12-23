@@ -11,15 +11,16 @@ import blogService from '../services/blogs'
 const Login = (props) => {
   const username = useField('text')
   const password = useField('text')
+  
   const handleLogin = async (event) => {
     event.preventDefault()
-    let response;
     try {
-      response = await loginService.login({
+      let response = await loginService.login({
           username: username.input().value,
           password: password.input().value 
 
       })
+      console.log('frontend login', response)
       window.localStorage
         .setItem('LoggedInBlogUser', JSON.stringify(response))
 
@@ -29,17 +30,14 @@ const Login = (props) => {
       props.login(response)
     }
     catch(exception) {
-      const error = exception.response.data.error;
-      if(error) {
+      if(exception.response) {
         props.sendMessage(exception.response.data.error, 'red')
-        props.clearMessage()
-      } 
-      
-      username.reset()
-      password.reset()
+      }  
+  
     }
     finally {
-      console.log('end')
+      username.reset()
+      password.reset()
     }
   }
 
