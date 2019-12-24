@@ -4,10 +4,17 @@ import blogService from './services/blogs'
 
 import Login from './components/Login'
 import Message from './components/Message'
+import Users from './components/Users'
+
 import BlogList from './components/BlogList'
 
 import { get_initalBlogs } from './reducers/blog'
 import { loginUser } from './reducers/login'
+
+import {
+  BrowserRouter as Router, 
+  Route, Link, Redirect, withRouter
+} from 'react-router-dom'
 
 const App = (props) => {
 
@@ -22,17 +29,14 @@ const App = (props) => {
   }, [])
 
   return (
-    <div>)
+    <div>
     <Message />
-
+    <Router>
     {(!props.user.token) 
-      ? <Login 
-         className="login"
-       /> 
-      : <BlogList 
-          className="bloglist"
-        />
+      ? <Route path = "/" render={() => <Login /> } /> 
+      : <Route path = "/users" render={() => <Users /> } />
     }
+      </Router>
     </div>
   )
 }
