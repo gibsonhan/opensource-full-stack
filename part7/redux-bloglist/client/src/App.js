@@ -7,9 +7,9 @@ import Message from './components/Message'
 import BlogList from './components/BlogList'
 
 import { get_initalBlogs } from './reducers/blog'
+import { loginUser } from './reducers/login'
 
 const App = (props) => {
-  const [user, setUser] = useState(null)
 
   useEffect(() => {
     const userTokenJSON = window.localStorage.getItem('LoggedInBlogUser')
@@ -17,22 +17,20 @@ const App = (props) => {
       props.get_initalBlogs()
       const userToken = JSON.parse(userTokenJSON) // this is seomthing I need to review
       blogService.setToken(userToken.token) 
-      setUser(userToken)
+      props.loginUser(userToken)
     }
   }, [])
+
   return (
-    <div>
+    <div>)
     <Message />
 
-    {(!user) 
+    {(!props.user.token) 
       ? <Login 
          className="login"
-         setUser={setUser}
        /> 
       : <BlogList 
           className="bloglist"
-          setUser={setUser}
-          user={user}
         />
     }
     </div>
@@ -42,7 +40,12 @@ const mapStateToProps = (state) => {
   return { user: state.user }
 }
 
+const mapDispatchToProps = {
+  get_initalBlogs,
+  loginUser,
+}
+
 export default connect(
   mapStateToProps,
-  {get_initalBlogs}
-)(App)
+  mapDispatchToProps,
+  )(App)

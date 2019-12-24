@@ -20,14 +20,11 @@ const Login = (props) => {
           password: password.input().value 
 
       })
-      console.log('frontend login', response)
+
+      props.loginUser(response)
       window.localStorage
         .setItem('LoggedInBlogUser', JSON.stringify(response))
-
       blogService.setToken(response.token)
-      console.log(response.token)
-      props.setUser(response)
-      props.login(response)
     }
     catch(exception) {
       if(exception.response) {

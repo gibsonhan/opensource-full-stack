@@ -14,8 +14,6 @@ const BlogList = (props) => {
   const handleLogout = () => {
     window.localStorage.removeItem('LoggedInBlogUser')
     blogService.resetToken()
-    
-    props.setUser('')
     props.logoutUser()
   }
   
@@ -53,7 +51,10 @@ const BlogList = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  return { bloglist: state.blogs }
+  return { 
+    user: state.user,
+    bloglist: state.blogs 
+  }
 }
 
 const mapDispatchToProps = {
