@@ -13,11 +13,10 @@ const Logout = (props) => {
   }
 	
 	return(
-		<div className="logout">
-			<div>{props.user.name} logged in :
-        <button onClick={() => handleLogout()}> Logout</button>
-      </div>
-		</div>
+		<span className="logout">
+			<span>{props.user.name} logged in </span>
+      <button onClick={() => handleLogout()}> Logout</button>
+		</span>
 	)
 }
 
@@ -29,5 +28,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
 	mapStateToProps,
-	{logoutUser }
+	{logoutUser}
 ) (Logout)

@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 import { connect } from 'react-redux'
-import { vote, remove } from '../reducers/blog'
+import { remove } from '../reducers/blog'
 import { sendMessage } from '../reducers/notification'
+import { vote } from '../reducers/blog'
 
 const Blog = (props) => {
   const {user, author, title, likes, url} = props.blog

@@ -1,16 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
-import Logout from '../components/Logout'
-import { uniqueBlogs } from '../helper/userHelper';
+import { countingBlogs } from '../helper/userHelper';
 
 const Users = (props) => {
-	const blogs = uniqueBlogs(props.blogs)
-	
+	const blogs = countingBlogs(props.blogs)
 	return (
 		<div className='basic-info'>
-			<h1>Users</h1>
-			<Logout />
 			<table>
 				<thead>
 					<tr>
@@ -19,7 +16,7 @@ const Users = (props) => {
 					</tr>
 				</thead>
 				<tbody>
-					{blogs.map(blog => <RowInfo key={blog.username} blog={blog} />)}
+					{blogs.map(blog => <RowInfo key={blog.id} blog={blog} />)}
 				</tbody>
 			</table>
 		</div>
@@ -27,10 +24,14 @@ const Users = (props) => {
 }
 
 const RowInfo = (props) => {
-	const {username, count} = props.blog
+	const {username, count, id} = props.blog
+	const path = `/users/${id}`
 	return(
 		<tr>
-			<td>{username}</td>
+			<td>
+				<Link to ={path}>{username}</Link> 
+			</td>
+			<td >{username}</td>
 			<td>{count}</td>
 		</tr>
 	)
