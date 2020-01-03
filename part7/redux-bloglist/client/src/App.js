@@ -16,6 +16,7 @@ import { loginUser } from './reducers/login'
 import {
   BrowserRouter as Router,
   Route,
+  Redirect,
 } from 'react-router-dom'
 
 const App = (props) => {
@@ -35,9 +36,10 @@ const App = (props) => {
       <Message />
 
       <Router>
-        {(props.user.token) 
-          ? <Nav /> 
-          : <Route exact path= "/" render={()=><Login />} />
+        <Nav />
+        {(!props.user.token) 
+          ? <Route exact path= "/" render={()=><Login />} />
+          : <Redirect to="/users" /> 
         }
         <Route exact path="/users" render={()=><Users />} />
         <Route exact path="/users/:id" render={({ match }) => <UserView path={match.params.id} />} />
