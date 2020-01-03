@@ -29,17 +29,17 @@ const App = (props) => {
       blogService.setToken(userToken.token) 
       props.loginUser(userToken)
     }
+    console.log()
   }, [])
   
   return (
     <div>
       <Message />
-
       <Router>
         <Nav />
-        {(!props.user.token) 
-          ? <Route exact path= "/" render={()=><Login />} />
-          : <Redirect to="/users" /> 
+        {(props.user.token) 
+          ? <Redirect to="/users" />
+          : <Route exact path= "/" render={()=><Login />} />
         }
         <Route exact path="/users" render={()=><Users />} />
         <Route exact path="/users/:id" render={({ match }) => <UserView path={match.params.id} />} />

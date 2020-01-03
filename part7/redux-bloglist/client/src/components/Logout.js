@@ -3,13 +3,17 @@ import { connect } from 'react-redux'
 import { logoutUser } from '../reducers/login'
 
 import blogService from '../services/blogs'
+import { useHistory } from 'react-router-dom'
 
 const Logout = (props) => {
+	let history = useHistory()
 	
 	const handleLogout = () => {
     window.localStorage.removeItem('LoggedInBlogUser')
     blogService.resetToken()
-    props.logoutUser()
+		props.logoutUser()
+
+		history.push("/")
   }
 	
 	return(
