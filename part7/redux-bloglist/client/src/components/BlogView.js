@@ -1,7 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import Comment from '../components/Comment'
+import CommentList from '../components/CommentList'
+
 import { vote } from '../reducers/blog'
+import { addComment } from '../reducers/comment'
 import { sendMessage } from '../reducers/notification'
 
 const BlogView = (props) => {
@@ -18,23 +22,30 @@ const BlogView = (props) => {
 	return (
 		<div className="blog-view">
 			<h2>{blog.title}</h2>
-			<p>Created by {blog.author}</p>
 			<p>{blog.url}</p>
 			<p>number of likes {blog.likes}</p>
+			<p>Created by {blog.author}</p>
 			<button onClick={handleLike}>Like</button>
+
+			<h2>Comment Here</h2>
+			{console.log(props.path)}
+			{console.log(props)}
+			<Comment numComment={props.comments.length} blogID={props.path}/>
+			<CommentList comments={props.comments} />
 		</div>
 	)
 }
 
 const mapStateToProps = (state) => {
 	return {
-		blogs: state.blogs
+		blogs: state.blogs,
+		comments: state.comments
 	}
 }
 
 const mapDispatchToProps = {
+	sendMessage,
 	vote,
-	sendMessage
 }
 
 export default connect (

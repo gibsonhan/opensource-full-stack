@@ -74,7 +74,7 @@ const blogReducer = (state = [], action) => {
 		 
 		case 'REMOVE_BLOG':
 			return state.filter(object => object.id !== action.payload.id)
-
+		
 		default:
 			return state
 	}

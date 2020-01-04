@@ -18,7 +18,6 @@ const Login = (props) => {
       let response = await loginService.login({
           username: username.input().value,
           password: password.input().value 
-
       })
 
       props.loginUser(response)
