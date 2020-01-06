@@ -9,9 +9,15 @@ const Comment = (props) => {
 	const handleComment = (e) => {
 		e.preventDefault()
 		let string = commentBox.input().value 
-		(props.numComments === 0)
-			? props.addComment('first', props.blogID, string)	
-		  : props.addComment('not_first', props.blogID, string)
+		
+		if(props.numComment === 0) {
+			props.addComment('first', props.blogID, string)
+		}
+		else {
+			props.addComment('noFirst', props.blogID, string)
+		}
+
+		commentBox.reset()
 	}
 	return (
 			<form onSubmit={handleComment}>

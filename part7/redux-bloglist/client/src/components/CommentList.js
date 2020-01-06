@@ -1,12 +1,14 @@
 import React from 'react'
 
 const CommentList = (props) => {
-	if(!props)
-		return <></>
-	console.log('comment list', props.comments)
+	if(!props.comments)
+		return <>No Comments</>
+
 	return (
-		<h1></h1>
-	)
+			<ul>
+				{props.comments.map(comment => <li key={comment}>{comment}</li>)}
+			</ul>
+		)
 }
 
 export default CommentList

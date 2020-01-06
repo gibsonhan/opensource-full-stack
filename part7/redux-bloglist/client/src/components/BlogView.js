@@ -5,7 +5,6 @@ import Comment from '../components/Comment'
 import CommentList from '../components/CommentList'
 
 import { vote } from '../reducers/blog'
-import { addComment } from '../reducers/comment'
 import { sendMessage } from '../reducers/notification'
 
 const BlogView = (props) => {
@@ -19,6 +18,15 @@ const BlogView = (props) => {
 		props.sendMessage(`${blog.title} + 1 vote`, 'green', 6)
 	}
 	
+	const commentCounter = () => {
+		let value = 0
+		if(props.comments[id] !==  undefined) {
+			value = props.comments[id].length
+		}
+		return value
+	}
+	
+	const id = props.path
 	return (
 		<div className="blog-view">
 			<h2>{blog.title}</h2>
@@ -27,11 +35,8 @@ const BlogView = (props) => {
 			<p>Created by {blog.author}</p>
 			<button onClick={handleLike}>Like</button>
 
-			<h2>Comment Here</h2>
-			{console.log(props.path)}
-			{console.log(props)}
-			<Comment numComment={props.comments.length} blogID={props.path}/>
-			<CommentList comments={props.comments} />
+			<Comment numComment={commentCounter()} blogID={id}/>
+			<CommentList comments={props.comments[id]} />
 		</div>
 	)
 }
