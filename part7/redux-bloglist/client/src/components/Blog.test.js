@@ -1,10 +1,10 @@
-import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
 
-import Blog from './Blog'
+import Blog from './Blog';
 
 describe('<Blog /> ', () => {
-    let component
+    let component;
 
     beforeEach(() => {
         const blog = {
@@ -15,43 +15,43 @@ describe('<Blog /> ', () => {
                 name: 'Mr. Author and Blog',
                 username: 'testing'
             }
-        }
+        };
 
         const user = {
             username: 'testing'
-        }
+        };
 
         component = render(
             <Blog blog={blog} user={user} />
-        )
+        );
 
-    })
+    });
     test('Verify name and author render by default', () => {
         expect(component.container).toHaveTextContent(
             'Only the blog and the author'
-        )
-    })
+        );
+    });
 
     test('default render does not show additional blog info', () => {
-        const div = component.container.querySelector('.displayBlog')
-        expect(div).toHaveStyle('display: none')
-    })
+        const div = component.container.querySelector('.displayBlog');
+        expect(div).toHaveStyle('display: none');
+    });
 
     test('Verify Url, Like, Added by, DisplayDelete visible after toggle visible', () => {
-        const clickArea = component.getByText('Only the blog and the author')
-        fireEvent.click(clickArea)
+        const clickArea = component.getByText('Only the blog and the author');
+        fireEvent.click(clickArea);
 
-        const div = component.container.querySelector('.displayBlog')
-        expect(div).not.toHaveStyle('display: none')
+        const div = component.container.querySelector('.displayBlog');
+        expect(div).not.toHaveStyle('display: none');
 
         expect(component.container).toHaveTextContent(
             'Catch 999.com'
-        )
+        );
 
-        const deleteButton = component.getByText('Remove')
-        expect(deleteButton).toBeDefined() 
-    })
+        const deleteButton = component.getByText('Remove');
+        expect(deleteButton).toBeDefined(); 
+    });
 
-})
+});
 
 

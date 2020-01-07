@@ -1,5 +1,5 @@
 const reducer = (state = [], action) => {
-	switch(action.type) {
-		case 'GET_BLOG':
-	}
-}
+    switch(action.type) {
+    case 'GET_BLOG':
+    }
+};

@@ -1,9 +1,7 @@
 module.exports = {
     'env': {
-        'commonjs': true,
-        'es6': true,
-        'node': true,
-        'jest/globals': true
+        'browser': true,
+        'es6': true
     },
     'extends': [
         'eslint:recommended',
@@ -17,16 +15,16 @@ module.exports = {
         'ecmaFeatures': {
             'jsx': true
         },
-        'ecmaVersion': 2018
+        'ecmaVersion': 2018,
+        'sourceType': 'module'
     },
     'plugins': [
-        'react',
-        'jest'
+        'react'
     ],
     'rules': {
         'indent': [
             'error',
-            2
+            4
         ],
         'linebreak-style': [
             'error',
@@ -38,19 +36,7 @@ module.exports = {
         ],
         'semi': [
             'error',
-            'never'
-        ],
-        "eqeqeq": "error",
-        "no-trailing-spaces": "error",
-        "object-curly-spacing": [
-            "error", "always"
-        ],
-        "arrow-spacing": [
-            "error", { "before": true, "after": true }],
-        "no-console": 0, 
-        "react/prop-types": 0
-    },
-    'parserOptions': {
-        'sourceType': 'module'
+            'always'
+        ]
     }
-}
+};

@@ -17,10 +17,10 @@ const blogs = [
         author: 'Mr. World1231',
         likes: '939'
     }
-]
+];
 
 const getAll = () => {
-    return Promise.resolve(blogs)
-}
+    return Promise.resolve(blogs);
+};
 
-export default { getAll }
+export default { getAll };

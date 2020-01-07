@@ -1,15 +1,15 @@
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom/extend-expect';
 
-let savedItems = {}
+let savedItems = {};
 
 const localStorageMock = {
     setItem: (key, item) => {
-        savedItems[key] = item
+        savedItems[key] = item;
     },
     getItem: (key) => savedItems[key],
     clear: () => {
-        savedItems={}
+        savedItems={};
     }
-}
+};
 
-Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+Object.defineProperty(window, 'localStorage', { value: localStorageMock });
