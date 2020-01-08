@@ -4,34 +4,30 @@ import { useField } from '../hooks';
 
 import { addComment } from '../reducers/comment';
 
-const Comment = (props) => {
-    const commentBox = useField('text');
-    const handleComment = (e) => {
-        e.preventDefault();
-        let string = commentBox.input().value; 
-		
-        if(props.numComment === 0) {
-            props.addComment('first', props.blogID, string);
-        }
-        else {
-            props.addComment('noFirst', props.blogID, string);
-        }
+const Comment = props => {
+  const commentBox = useField('text');
+  const handleComment = e => {
+    e.preventDefault();
+    let string = commentBox.input().value;
 
-        commentBox.reset();
-    };
-    return (
-        <form onSubmit={handleComment}>
-            <h1>Comment Here</h1>
-            <input {...commentBox.input()}/>
-            <button>Comment</button>
-        </form>
-    );
+    if (props.numComment === 0) {
+      props.addComment('first', props.blogID, string);
+    } else {
+      props.addComment('noFirst', props.blogID, string);
+    }
+
+    commentBox.reset();
+  };
+  return (
+    <form onSubmit={handleComment}>
+      <h1>Comment Here</h1>
+      <input data-cy="comment-box" {...commentBox.input()} />
+      <button data-cy="submit-comment">Comment</button>
+    </form>
+  );
 };
 
 const mapDispatchToProps = {
-    addComment
+  addComment,
 };
-export default connect(
-    null,
-    mapDispatchToProps,
-)(Comment);
+export default connect(null, mapDispatchToProps)(Comment);
